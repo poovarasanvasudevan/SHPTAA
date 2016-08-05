@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:elevation="4dp"
-        app:carbon_elevation="4dp"
-        app:elevation="4dp">
+        app:carbon_elevation="4dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -31,8 +30,9 @@
         <carbon.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:background="@color/carbon_white"
-            android:layout_alignParentBottom="true">
+            app:cardElevation="2dp">
 
             <carbon.widget.LinearLayout
                 android:layout_width="match_parent"
@@ -47,6 +47,7 @@
                     android:layout_height="40dp"
                     android:layout_margin="5dp"
                     android:background="@color/md_blue_500"
+                    android:backgroundTint="@color/md_blue_500"
                     android:text="Login with srcm"
                     app:carbon_cornerRadius="3dp"
                     app:carbon_rippleColor="#666" />
@@ -67,7 +68,10 @@
                         android:layout_margin="5dp"
                         android:layout_weight="1"
                         android:background="#3b5998"
-                        android:text="Facebook" />
+                        android:backgroundTint="#3b5998"
+                        android:text="Facebook"
+                        app:carbon_cornerRadius="3dp"
+                        app:carbon_rippleColor="#666" />
 
 
                     <carbon.widget.Button
@@ -76,7 +80,10 @@
                         android:layout_margin="5dp"
                         android:layout_weight="1"
                         android:background="@color/md_red_400"
-                        android:text="Google+" />
+                        android:backgroundTint="@color/md_red_400"
+                        android:text="Google+"
+                        app:carbon_cornerRadius="3dp"
+                        app:carbon_rippleColor="#666" />
                 </carbon.widget.LinearLayout>
             </carbon.widget.LinearLayout>
         </carbon.widget.CardView>

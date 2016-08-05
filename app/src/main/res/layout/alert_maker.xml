@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <carbon.widget.RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/fullLayout"
+        android:background="@color/md_green_500"
+        android:layout_height="30dp">
+
+        <carbon.widget.LinearLayout
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:id="@+id/image"
+                android:layout_alignParentRight="true"
+                android:layout_alignBottom="@+id/title"
+                android:layout_width="22dp"
+                app:iiv_color="#fff"
+                android:layout_height="22dp" />
+
+            <carbon.widget.TextView
+                android:id="@+id/title"
+                android:layout_toLeftOf="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                android:text="Notification"
+                android:textColor="@android:color/white"
+                android:textSize="7pt" />
+        </carbon.widget.LinearLayout>
+    </carbon.widget.RelativeLayout>
+</merge>

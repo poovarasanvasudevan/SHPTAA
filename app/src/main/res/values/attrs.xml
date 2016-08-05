@@ -33,15 +33,15 @@
         <attr name="civ_fill_color" format="color" />
     </declare-styleable>
     <declare-styleable name="CheckBox">
-        <attr name="checkbox_color" format="color"/>
-        <attr name="checkbox_checked_color" format="color"/>
+        <attr name="checkbox_color" format="color" />
+        <attr name="checkbox_checked_color" format="color" />
     </declare-styleable>
 
     <declare-styleable name="SeekBarCompat">
         <attr name="thumbColor" format="color" />
-        <attr name="progressColor" format="color"/>
-        <attr name="progressBackgroundColor" format="color"/>
-        <attr name="thumbAlpha" format="float"/>
+        <attr name="progressColor" format="color" />
+        <attr name="progressBackgroundColor" format="color" />
+        <attr name="thumbAlpha" format="float" />
     </declare-styleable>
 
     <dimen name="one_dp">1sp</dimen>
@@ -61,4 +61,9 @@
     <color name="checkbox_color">#6d6d6d</color>
     <color name="checkbox_checked_color">#55b03d</color>
     <color name="checkbox_mark_color">#eeeeee</color>
+
+
+    <declare-styleable name="SHPTButton">
+        <attr name="shpt_background" format="color" />
+    </declare-styleable>
 </resources>

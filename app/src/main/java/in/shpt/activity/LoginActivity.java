@@ -11,7 +11,6 @@ import org.androidannotations.annotations.ViewById;
 
 import carbon.widget.Button;
 import in.shpt.R;
-import in.shpt.ui.SHPTToast_;
 
 
 @EActivity(R.layout.activity_login)
@@ -34,6 +33,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Click(R.id.loginBtn)
     public void loginBtnClicked(View v) {
-        SHPTToast_.success(this,"Hello World");
+        HomeActivity_.intent(this).start();
     }
 }

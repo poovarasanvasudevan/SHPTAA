@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<carbon.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/wholeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="in.shpt.activity.HomeActivity">
+
+    <carbon.beta.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:elevation="4dp"
+        app:carbon_elevation="4dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    </carbon.beta.AppBarLayout>
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appbar"
+        tools:openDrawer="start">
+
+        <carbon.widget.RelativeLayout
+            android:id="@+id/fullContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#eaeaea">
+
+            <in.shpt.ui.AlertMaker_
+                android:id="@+id/alertMaker"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <carbon.widget.LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <carbon.widget.CardView
+                    android:id="@+id/searchCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp">
+
+                        <ImageButton
+                            android:id="@+id/searchButton"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@null" />
+
+                        <EditText
+                            android:id="@+id/searchView"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@null"
+                            android:hint="@string/search_box_hint" />
+                    </LinearLayout>
+
+                </carbon.widget.CardView>
+
+                <carbon.widget.LinearLayout
+                    android:id="@+id/networkProblemLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.mikepenz.iconics.view.IconicsImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:iiv_color="?colorPrimary"
+                        app:iiv_icon="gmi_network_off" />
+
+                    <carbon.widget.TextView
+                        style="@style/carbon_TextAppearance.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No Internet Connection" />
+                </carbon.widget.LinearLayout>
+            </carbon.widget.LinearLayout>
+        </carbon.widget.RelativeLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navigationView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/nav_menu" />
+    </android.support.v4.widget.DrawerLayout>
+</carbon.widget.RelativeLayout>
