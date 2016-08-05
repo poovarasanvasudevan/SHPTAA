@@ -48,7 +48,11 @@ public class AlertMaker extends RelativeLayout {
 
 
     public void makeAlert(String alertText, AlertMakerEnum alertMaker) {
-        switch (alertMaker) {
+        makeAlert(alertText, alertMaker, 5000);
+    }
+
+    public void makeAlert(String alertText, AlertMakerEnum alertMakerEnum, long time) {
+        switch (alertMakerEnum) {
             case SUCCESS: {
                 image.setIcon(Ionicons.Icon.ion_ios_checkmark_empty);
                 fullLayout.setBackgroundColor(getResources().getColor(R.color.md_green_500));
@@ -77,6 +81,6 @@ public class AlertMaker extends RelativeLayout {
             public void run() {
                 setVisibility(View.GONE);
             }
-        }, 5000);
+        }, time);
     }
 }

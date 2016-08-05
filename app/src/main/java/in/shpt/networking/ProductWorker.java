@@ -27,6 +27,10 @@ public class ProductWorker {
 
 
     public List<Product> getPopularProducts(int limit) throws IOException {
-        return shpt.getAdapter().getPopularProducts(limit).execute().body();
+        return shpt
+                .getAdapter()
+                .getPopularProducts(limit)
+                .execute()
+                .body();
     }
 }
