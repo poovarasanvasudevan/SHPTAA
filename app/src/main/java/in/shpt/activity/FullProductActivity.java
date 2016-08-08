@@ -15,6 +15,9 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import carbon.widget.ImageView;
 import carbon.widget.TextView;
 import in.shpt.R;
@@ -30,10 +33,8 @@ public class FullProductActivity extends AppCompatActivity {
     Product product;
 
     @ViewById
-    TextView viewProductTitle;
+    TextView viewProductTitle, viewProductCost;
 
-    @ViewById
-    TextView viewDescriptionText;
 
     @ViewById
     ImageView viewProductImage;
@@ -49,9 +50,11 @@ public class FullProductActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(product.getName());
 
 
         viewProductTitle.setText(product.getName());
+        viewProductCost.setText("₹ " + new BigDecimal(product.getPrice()).setScale(2, RoundingMode.HALF_UP).doubleValue());
         //viewDescriptionText.setText("\t\t"+product.getDescription());
         icons.displayImage(product.getImage(), viewProductImage);
     }
