@@ -33,4 +33,12 @@ public class ProductWorker {
                 .execute()
                 .body();
     }
+
+    public List<Product> getLatestProducts(int limit) throws IOException {
+        return shpt
+                .getAdapter()
+                .getLatestProducts(limit)
+                .execute()
+                .body();
+    }
 }

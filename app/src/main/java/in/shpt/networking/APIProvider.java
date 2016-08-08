@@ -14,4 +14,8 @@ public interface APIProvider {
 
     @GET("index.php?route=api/product/popular")
     Call<List<Product>> getPopularProducts(@Query("limit") int limit);
+
+
+    @GET("index.php?route=api/product/latest")
+    Call<List<Product>> getLatestProducts(@Query("limit") int limit);
 }

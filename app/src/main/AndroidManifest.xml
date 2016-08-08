@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--Activities-->
+        <!-- Activities -->
         <activity android:name=".MainActivity_">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,19 +23,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity_" />
-        <activity android:name=".activity.HomeActivity_"></activity>
+        <activity android:name=".activity.HomeActivity_" />
 
-
-        <!-- Broadcast Receivers-->
+        <!-- Broadcast Receivers -->
         <receiver
             android:name=".receivers.ConnectionWatcher_"
             android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".activity.FullProductActivity_"></activity>
     </application>
 
 </manifest>

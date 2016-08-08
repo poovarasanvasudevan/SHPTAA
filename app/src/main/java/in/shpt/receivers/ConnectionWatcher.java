@@ -7,10 +7,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import org.androidannotations.annotations.EReceiver;
-import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.greenrobot.eventbus.EventBus;
 
-import in.shpt.preference.SHPTPreferences_;
 
 /**
  * Created by poovarasanv on 4/8/16.
@@ -20,20 +18,19 @@ import in.shpt.preference.SHPTPreferences_;
 public class ConnectionWatcher extends BroadcastReceiver {
     private boolean isConnected = false;
 
-    @Pref
-    SHPTPreferences_ shptPreferences;
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        shptPreferences.isInternetAvailable().put(isNetworkAvailable(context));
+       // shptPreferences.isInternetAvailable().put(isNetworkAvailable(context));
 
         if (isNetworkAvailable(context)) {
             EventBus.getDefault().post(true);
-            shptPreferences.isInternetAvailable().put(true);
+            //shptPreferences.isInternetAvailable().put(true);
         } else {
             EventBus.getDefault().post(false);
-            shptPreferences.isInternetAvailable().put(false);
+           // shptPreferences.isInternetAvailable().put(false);
         }
     }
 

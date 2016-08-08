@@ -1,13 +1,12 @@
 package in.shpt.activity;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -17,7 +16,6 @@ import android.widget.ImageButton;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.ionicons_typeface_library.Ionicons;
 
 import org.androidannotations.annotations.AfterViews;
@@ -36,14 +34,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 
 import carbon.widget.LinearLayout;
 import in.shpt.R;
 import in.shpt.core.models.SHPTNavMenu;
+import in.shpt.models.products.Product;
 import in.shpt.networking.ProductWorker;
+import in.shpt.preference.Icons;
 import in.shpt.shptenum.AlertMakerEnum;
 import in.shpt.ui.AlertMaker;
+import in.shpt.ui.ProductSwipeCard;
 
 @EActivity(R.layout.activity_home)
 @OptionsMenu(R.menu.home_menu)
@@ -66,7 +68,6 @@ public class HomeActivity extends AppCompatActivity {
     @ViewById
     ImageButton searchButton;
 
-
     @ViewById
     LinearLayout networkProblemLayout;
 
@@ -75,9 +76,14 @@ public class HomeActivity extends AppCompatActivity {
     @Bean
     ProductWorker productWorker;
 
-
     @ViewById
     AlertMaker alertMaker;
+
+    @ViewById
+    ProductSwipeCard latestProduct;
+
+    @Bean
+    Icons icons;
 
     @AfterViews
     public void init() {
@@ -87,7 +93,7 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-        searchButton.setImageDrawable(getIcon(Ionicons.Icon.ion_ios_search, 20, Color.DKGRAY));
+        searchButton.setImageDrawable(icons.getIcon(Ionicons.Icon.ion_ios_search, 20, Color.DKGRAY));
 
         setUpNavBarMenu();
 
@@ -125,7 +131,7 @@ public class HomeActivity extends AppCompatActivity {
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
-        getPopularProduct();
+        new LatestProductLoader().execute(5);
 
     }
 
@@ -147,14 +153,28 @@ public class HomeActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Background
-    public void getPopularProduct() {
-        try {
-            Log.i("TAH", productWorker.getPopularProducts(10).size() + "");
-        } catch (IOException e) {
-            e.printStackTrace();
+    class LatestProductLoader extends AsyncTask<Integer, Void, HashMap<String, List<Product>>> {
+        @Override
+        protected HashMap<String, List<Product>> doInBackground(Integer... integers) {
+            try {
+                HashMap<String, List<Product>> productHash = new HashMap<>();
+                productHash.put("latest", productWorker.getLatestProducts(integers[0]));
+                productHash.put("popular", productWorker.getLatestProducts(integers[0]));
+                return productHash;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(HashMap<String, List<Product>> products) {
+            latestProduct.setUpPager(getSupportFragmentManager(), products.get("latest"));
+            //homeSwipePager.setUp(getSupportFragmentManager(), products);
+            super.onPostExecute(products);
         }
     }
+
 
     @Background
     public void setUpNavBarMenu() {
@@ -167,7 +187,7 @@ public class HomeActivity extends AppCompatActivity {
             SubMenu submenu = navMenu.addSubMenu(yourList.get(i).getTitle());
             for (int j = 0; j < yourList.get(i).getChild().size(); j++) {
                 submenu.add(yourList.get(i).getChild().get(j).getName())
-                        .setIcon(getIcon(yourList.get(i).getChild().get(j).getIcon()));
+                        .setIcon(icons.getIcon(yourList.get(i).getChild().get(j).getIcon()));
             }
         }
     }
@@ -199,38 +219,17 @@ public class HomeActivity extends AppCompatActivity {
 
     @OptionsMenuItem(R.id.cartMenu)
     void injectCartMenu(MenuItem cartItem) {
-        cartItem.setIcon(getIcon(Ionicons.Icon.ion_ios_cart));
+        cartItem.setIcon(icons.getIcon(Ionicons.Icon.ion_ios_cart));
     }
 
     @OptionsMenuItem(R.id.notificationMenu)
     void injectNotificationMenu(MenuItem notificationItem) {
-        notificationItem.setIcon(getIcon(Ionicons.Icon.ion_ios_bell));
+        notificationItem.setIcon(icons.getIcon(Ionicons.Icon.ion_ios_bell));
     }
 
     @OptionsItem(R.id.notificationMenu)
     void makeNotify() {
         alertMaker.makeAlert("Notification Text", AlertMakerEnum.FAILURE);
-    }
-
-    public Drawable getIcon(Ionicons.Icon icon) {
-        return new IconicsDrawable(this)
-                .icon(icon)
-                .color(Color.WHITE)
-                .sizeDp(20);
-    }
-
-    public Drawable getIcon(Ionicons.Icon icon, int size, int color) {
-        return new IconicsDrawable(this)
-                .icon(icon)
-                .color(color)
-                .sizeDp(size);
-    }
-
-    public Drawable getIcon(String icon) {
-        return new IconicsDrawable(this)
-                .icon(icon)
-                .color(Color.DKGRAY)
-                .sizeDp(10);
     }
 
 

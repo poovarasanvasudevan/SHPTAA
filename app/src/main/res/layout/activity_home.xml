@@ -37,63 +37,84 @@
 
             <in.shpt.ui.AlertMaker_
                 android:id="@+id/alertMaker"
-                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true" />
 
-            <carbon.widget.LinearLayout
+            <carbon.widget.ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
 
-                <carbon.widget.CardView
-                    android:id="@+id/searchCard"
+                <carbon.widget.RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp">
+                    android:layout_height="match_parent">
 
-                    <LinearLayout
+
+                    <carbon.widget.CardView
+                        android:id="@+id/searchCard"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp">
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp">
 
-                        <ImageButton
-                            android:id="@+id/searchButton"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="@null" />
-
-                        <EditText
-                            android:id="@+id/searchView"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:background="@null"
-                            android:hint="@string/search_box_hint" />
-                    </LinearLayout>
+                            android:layout_height="48dp">
 
-                </carbon.widget.CardView>
+                            <ImageButton
+                                android:id="@+id/searchButton"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@null" />
 
-                <carbon.widget.LinearLayout
-                    android:id="@+id/networkProblemLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                            <EditText
+                                android:id="@+id/searchView"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:background="@null"
+                                android:hint="@string/search_box_hint" />
+                        </LinearLayout>
 
-                    <com.mikepenz.iconics.view.IconicsImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        app:iiv_color="?colorPrimary"
-                        app:iiv_icon="gmi_network_off" />
+                    </carbon.widget.CardView>
 
-                    <carbon.widget.TextView
-                        style="@style/carbon_TextAppearance.Body1"
+                    <carbon.widget.LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/searchCard"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical"
+                        android:layout_marginRight="10dp">
+
+                        <in.shpt.ui.ProductSwipeCard_
+                            android:layout_width="match_parent"
+                            android:id="@+id/latestProduct"
+                            android:layout_height="170dp" />
+                    </carbon.widget.LinearLayout>
+
+
+                    <carbon.widget.LinearLayout
+                        android:id="@+id/networkProblemLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="No Internet Connection" />
-                </carbon.widget.LinearLayout>
-            </carbon.widget.LinearLayout>
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <com.mikepenz.iconics.view.IconicsImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:iiv_color="?colorPrimary"
+                            app:iiv_icon="gmi_network_off" />
+
+                        <carbon.widget.TextView
+                            style="@style/carbon_TextAppearance.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No Internet Connection" />
+                    </carbon.widget.LinearLayout>
+                </carbon.widget.RelativeLayout>
+            </carbon.widget.ScrollView>
         </carbon.widget.RelativeLayout>
 
         <android.support.design.widget.NavigationView

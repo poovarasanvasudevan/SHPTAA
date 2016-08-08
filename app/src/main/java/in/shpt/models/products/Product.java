@@ -1,9 +1,12 @@
 package in.shpt.models.products;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by poovarasanv on 5/8/16.
  */
-public class Product {
+public class Product implements Parcelable {
 
     /**
      * product_id : 2405
@@ -65,11 +68,11 @@ public class Product {
     private String quantity;
     private String stock_status;
     private String image;
-    private Object manufacturer_id;
-    private Object manufacturer;
+    private String manufacturer_id;
+    private String manufacturer;
     private String price;
-    private Object special;
-    private Object reward;
+    private String special;
+    private String reward;
     private String points;
     private String tax_class_id;
     private String date_available;
@@ -225,19 +228,19 @@ public class Product {
         this.image = image;
     }
 
-    public Object getManufacturer_id() {
+    public String getManufacturer_id() {
         return manufacturer_id;
     }
 
-    public void setManufacturer_id(Object manufacturer_id) {
+    public void setManufacturer_id(String manufacturer_id) {
         this.manufacturer_id = manufacturer_id;
     }
 
-    public Object getManufacturer() {
+    public String getManufacturer() {
         return manufacturer;
     }
 
-    public void setManufacturer(Object manufacturer) {
+    public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
 
@@ -249,19 +252,19 @@ public class Product {
         this.price = price;
     }
 
-    public Object getSpecial() {
+    public String getSpecial() {
         return special;
     }
 
-    public void setSpecial(Object special) {
+    public void setSpecial(String special) {
         this.special = special;
     }
 
-    public Object getReward() {
+    public String getReward() {
         return reward;
     }
 
-    public void setReward(Object reward) {
+    public void setReward(String reward) {
         this.reward = reward;
     }
 
@@ -408,4 +411,111 @@ public class Product {
     public void setViewed(String viewed) {
         this.viewed = viewed;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.product_id);
+        dest.writeString(this.name);
+        dest.writeString(this.description);
+        dest.writeString(this.meta_description);
+        dest.writeString(this.meta_keyword);
+        dest.writeString(this.tag);
+        dest.writeString(this.model);
+        dest.writeString(this.sku);
+        dest.writeString(this.upc);
+        dest.writeString(this.ean);
+        dest.writeString(this.jan);
+        dest.writeString(this.isbn);
+        dest.writeString(this.mpn);
+        dest.writeString(this.location);
+        dest.writeString(this.quantity);
+        dest.writeString(this.stock_status);
+        dest.writeString(this.image);
+        dest.writeString(this.manufacturer_id);
+        dest.writeString(this.manufacturer);
+        dest.writeString(this.price);
+        dest.writeString(this.special);
+        dest.writeString(this.reward);
+        dest.writeString(this.points);
+        dest.writeString(this.tax_class_id);
+        dest.writeString(this.date_available);
+        dest.writeString(this.weight);
+        dest.writeString(this.weight_class_id);
+        dest.writeString(this.length);
+        dest.writeString(this.width);
+        dest.writeString(this.height);
+        dest.writeString(this.length_class_id);
+        dest.writeString(this.subtract);
+        dest.writeInt(this.rating);
+        dest.writeInt(this.reviews);
+        dest.writeString(this.minimum);
+        dest.writeString(this.sort_order);
+        dest.writeString(this.status);
+        dest.writeString(this.date_added);
+        dest.writeString(this.date_modified);
+        dest.writeString(this.viewed);
+    }
+
+    public Product() {
+    }
+
+    protected Product(Parcel in) {
+        this.product_id = in.readString();
+        this.name = in.readString();
+        this.description = in.readString();
+        this.meta_description = in.readString();
+        this.meta_keyword = in.readString();
+        this.tag = in.readString();
+        this.model = in.readString();
+        this.sku = in.readString();
+        this.upc = in.readString();
+        this.ean = in.readString();
+        this.jan = in.readString();
+        this.isbn = in.readString();
+        this.mpn = in.readString();
+        this.location = in.readString();
+        this.quantity = in.readString();
+        this.stock_status = in.readString();
+        this.image = in.readString();
+        this.manufacturer_id = in.readString();
+        this.manufacturer = in.readString();
+        this.price = in.readString();
+        this.special = in.readString();
+        this.reward = in.readString();
+        this.points = in.readString();
+        this.tax_class_id = in.readString();
+        this.date_available = in.readString();
+        this.weight = in.readString();
+        this.weight_class_id = in.readString();
+        this.length = in.readString();
+        this.width = in.readString();
+        this.height = in.readString();
+        this.length_class_id = in.readString();
+        this.subtract = in.readString();
+        this.rating = in.readInt();
+        this.reviews = in.readInt();
+        this.minimum = in.readString();
+        this.sort_order = in.readString();
+        this.status = in.readString();
+        this.date_added = in.readString();
+        this.date_modified = in.readString();
+        this.viewed = in.readString();
+    }
+
+    public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel source) {
+            return new Product(source);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 }
