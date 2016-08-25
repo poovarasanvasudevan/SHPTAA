@@ -35,6 +35,7 @@ import in.shpt.ui.AlertMaker;
 import in.shpt.widget.EndlessScroll;
 import in.shpt.widget.LanguageContextMenu;
 
+
 @EActivity(R.layout.activity_book)
 public class BookActivity extends AppCompatActivity implements LanguageContextMenu.OnFeedContextMenuItemClickListener {
 
@@ -78,6 +79,7 @@ public class BookActivity extends AppCompatActivity implements LanguageContextMe
 
     String sortingType = null;
     String orderType = null;
+    boolean menuAdded = false;
 
     @AfterViews
     public void init() {
@@ -216,19 +218,23 @@ public class BookActivity extends AppCompatActivity implements LanguageContextMe
                     getSupportActionBar().setTitle(bookList.getHeadingTitle());
                     getSupportActionBar().setSubtitle(bookList.getDescription());
 
-                    sortList = new ArrayList<>();
-                    sort = new ArrayList<>();
-                    for (Sort sorts : bookList.getSorts()) {
-                        sortList.add(sorts.getText().replace("&gt;", ">"));
-                        sort.add(sorts);
+                    if (menuAdded == false) {
+                        sortList = new ArrayList<>();
+                        sort = new ArrayList<>();
+                        for (Sort sorts : bookList.getSorts()) {
+                            sortList.add(sorts.getText().replace("&gt;", ">"));
+                            sort.add(sorts);
 
+                        }
+                        List<String[]> items = new ArrayList<>();
+                        items.add(authorArray);
+                        items.add(sortList.toArray(new String[0]));
+                        items.add(sortArray);
+                        languageMenu.setmMenuItems(items);
+                        languageMenu.setmUpArrow(R.drawable.arrow_up);
+                        languageMenu.setmDownArrow(R.drawable.arrow_down);
+                        menuAdded = true;
                     }
-                    List<String[]> items = new ArrayList<>();
-                    items.add(authorArray);
-                    items.add(sortList.toArray(new String[0]));
-                    items.add(sortArray);
-                    languageMenu.setmMenuItems(items);
-
 
 
                     bookListAdapter.addData(bookList.getProducts());
