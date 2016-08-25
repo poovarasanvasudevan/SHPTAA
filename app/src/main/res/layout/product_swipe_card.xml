@@ -19,7 +19,7 @@
 
             <carbon.widget.ImageView
                 android:id="@+id/productImage"
-                android:layout_width="100dp"
+                android:layout_width="110dp"
                 android:layout_height="130dp" />
 
             <LinearLayout

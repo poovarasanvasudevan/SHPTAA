@@ -2,7 +2,9 @@
 <carbon.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    app:carbon_insetColor="?attr/colorPrimary">
 
     <carbon.beta.AppBarLayout
         android:id="@+id/appbar"
@@ -95,6 +97,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:id="@+id/viewProductDetail"
+                android:layout_height="match_parent" />
         </carbon.widget.LinearLayout>
     </carbon.widget.RelativeLayout>
 </carbon.widget.RelativeLayout>

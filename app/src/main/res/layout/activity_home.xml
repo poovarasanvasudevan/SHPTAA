@@ -53,9 +53,11 @@
 
                     <carbon.widget.CardView
                         android:id="@+id/searchCard"
+                        app:cardElevation="0dp"
+                        app:carbon_cornerRadius="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp">
+                        android:layout_margin="8dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -81,15 +83,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/searchCard"
-                        android:layout_marginLeft="10dp"
-                        android:orientation="vertical"
-                        android:layout_marginRight="10dp">
+                        android:id="@+id/latestProductCard"
+                        android:orientation="vertical">
 
                         <in.shpt.ui.ProductSwipeCard_
                             android:layout_width="match_parent"
                             android:id="@+id/latestProduct"
                             android:layout_height="170dp" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:id="@+id/popularProductList"
+                            android:layout_height="wrap_content" />
                     </carbon.widget.LinearLayout>
+
+
+
+
 
 
                     <carbon.widget.LinearLayout

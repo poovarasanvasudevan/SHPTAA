@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#333"
+    android:layout_height="match_parent"
+    tools:context="in.shpt.activity.FullScreenImageViewer">
+
+
+    <carbon.widget.ImageView
+        android:layout_width="match_parent"
+        android:id="@+id/fullImage"
+        android:layout_height="match_parent" />
+
+    <carbon.widget.LinearLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="#000"
+        android:alpha="0.45"
+        android:padding="10dp"
+        android:layout_height="80dp">
+
+        <carbon.widget.TextView
+            android:layout_width="match_parent"
+            android:textSize="18dp"
+            android:text="Hello World"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:id="@+id/imageDescription"
+            android:layout_height="wrap_content" />
+    </carbon.widget.LinearLayout>
+</RelativeLayout>

@@ -3,7 +3,6 @@ package in.shpt.preference;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.ionicons_typeface_library.Ionicons;
@@ -46,13 +45,31 @@ public class Icons {
 
 
     public void displayImage(String url, ImageView imageView) {
-        String image = "https://shptqa.dev4srcm.org/image/cache/" + url;
-        Picasso.with(context)
-                .load("https://shptqa.dev4srcm.org/image/cache/data/2397_FC-228x228.jpg")
-                .resize(220,260)
-                .into(imageView);
 
-        Log.i("Image URL : ", image);
+        if (url != null) {
 
+
+
+            boolean isJpg = url.contains(".jpg");
+
+            String imageUrl = "";
+            imageUrl = url.replace(".png", "");
+            imageUrl = imageUrl.replace(".jpg", "");
+            imageUrl = imageUrl + "-550x550";
+
+            if (isJpg)
+                imageUrl = imageUrl + ".jpg";
+            else
+                imageUrl = imageUrl + ".png";
+
+
+
+           // Log.i("URL","https://shptqa.dev4srcm.org/image/cache/" + imageUrl);
+
+            Picasso.with(context)
+                    .load("https://shptqa.dev4srcm.org/image/cache/" + imageUrl)
+                    .resize(220, 300)
+                    .into(imageView);
+        }
     }
 }

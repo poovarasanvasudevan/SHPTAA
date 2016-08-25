@@ -34,5 +34,6 @@ public class LoginActivity extends AppCompatActivity {
     @Click(R.id.loginBtn)
     public void loginBtnClicked(View v) {
         HomeActivity_.intent(this).start();
+        finish();
     }
 }

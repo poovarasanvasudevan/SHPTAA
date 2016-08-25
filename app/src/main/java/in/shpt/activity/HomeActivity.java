@@ -1,11 +1,14 @@
 package in.shpt.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mikepenz.ionicons_typeface_library.Ionicons;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
@@ -39,6 +43,8 @@ import java.util.List;
 
 import carbon.widget.LinearLayout;
 import in.shpt.R;
+import in.shpt.adapter.ProductListAdapter;
+import in.shpt.application.SHPT;
 import in.shpt.core.models.SHPTNavMenu;
 import in.shpt.models.products.Product;
 import in.shpt.networking.ProductWorker;
@@ -84,6 +90,15 @@ public class HomeActivity extends AppCompatActivity {
 
     @Bean
     Icons icons;
+
+    @App
+    SHPT shpt;
+
+    @ViewById
+    RecyclerView popularProductList;
+
+    @Bean
+    ProductListAdapter productListAdapter;
 
     @AfterViews
     public void init() {
@@ -131,7 +146,7 @@ public class HomeActivity extends AppCompatActivity {
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
-        new LatestProductLoader().execute(5);
+        new LatestProductLoader().execute(5,3);
 
     }
 
@@ -157,10 +172,14 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         protected HashMap<String, List<Product>> doInBackground(Integer... integers) {
             try {
-                HashMap<String, List<Product>> productHash = new HashMap<>();
-                productHash.put("latest", productWorker.getLatestProducts(integers[0]));
-                productHash.put("popular", productWorker.getLatestProducts(integers[0]));
-                return productHash;
+                if(shpt.isInternetAvailable()) {
+                    HashMap<String, List<Product>> productHash = new HashMap<>();
+                    productHash.put("latest", productWorker.getLatestProducts(integers[0]));
+                    productHash.put("popular", productWorker.getPopularProducts(integers[1]));
+                    return productHash;
+                } else{
+                    return null;
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -169,8 +188,20 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(HashMap<String, List<Product>> products) {
-            latestProduct.setUpPager(getSupportFragmentManager(), products.get("latest"));
-            //homeSwipePager.setUp(getSupportFragmentManager(), products);
+
+            if(products == null){
+                networkProblemLayout.setVisibility(View.VISIBLE);
+            } else {
+                latestProduct.setUpPager(getSupportFragmentManager(), products.get("latest"));
+                //homeSwipePager.setUp(getSupportFragmentManager(), products);
+
+                LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
+                llm.setOrientation(LinearLayoutManager.VERTICAL);
+                popularProductList.setLayoutManager(llm);
+                productListAdapter.addData(products.get("popular"));
+                popularProductList.setAdapter(productListAdapter);
+
+            }
             super.onPostExecute(products);
         }
     }
@@ -186,8 +217,19 @@ public class HomeActivity extends AppCompatActivity {
         for (int i = 0; i < yourList.size(); i++) {
             SubMenu submenu = navMenu.addSubMenu(yourList.get(i).getTitle());
             for (int j = 0; j < yourList.get(i).getChild().size(); j++) {
+
+                Class c = null;
+                try {
+                    c = Class.forName(yourList.get(i).getChild().get(j).getAction());
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                Intent intent = new Intent(HomeActivity.this,c);
+
                 submenu.add(yourList.get(i).getChild().get(j).getName())
-                        .setIcon(icons.getIcon(yourList.get(i).getChild().get(j).getIcon()));
+                        .setIcon(icons.getIcon(yourList.get(i).getChild().get(j).getIcon()))
+                .setIntent(intent);
             }
         }
     }
@@ -242,5 +284,11 @@ public class HomeActivity extends AppCompatActivity {
             connection = false;
             networkProblemLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

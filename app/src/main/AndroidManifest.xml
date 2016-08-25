@@ -23,7 +23,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity_" />
-        <activity android:name=".activity.HomeActivity_" />
+        <activity
+            android:name=".activity.HomeActivity_"
+            android:windowSoftInputMode="stateHidden" />
 
         <!-- Broadcast Receivers -->
         <receiver
@@ -36,7 +38,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.FullProductActivity_"></activity>
+        <activity android:name=".activity.FullProductActivity_" />
+        <activity android:name=".activity.FullScreenImageViewer_" />
+        <activity android:name=".activity.BookActivity_"></activity>
     </application>
 
 </manifest>

@@ -48,10 +48,18 @@ public class AlertMaker extends RelativeLayout {
 
 
     public void makeAlert(String alertText, AlertMakerEnum alertMaker) {
-        makeAlert(alertText, alertMaker, 5000);
+        makeAlert(alertText, alertMaker, 5000, false);
     }
 
-    public void makeAlert(String alertText, AlertMakerEnum alertMakerEnum, long time) {
+    public void makeAlert(String alertText, AlertMakerEnum alertMaker, boolean sticky) {
+        makeAlert(alertText, alertMaker, 5000, sticky);
+    }
+
+    public void removeSticky() {
+        setVisibility(GONE);
+    }
+
+    public void makeAlert(String alertText, AlertMakerEnum alertMakerEnum, long time, boolean sticky) {
         switch (alertMakerEnum) {
             case SUCCESS: {
                 image.setIcon(Ionicons.Icon.ion_ios_checkmark_empty);
@@ -76,11 +84,16 @@ public class AlertMaker extends RelativeLayout {
         }
         title.setText(alertText);
         setVisibility(View.VISIBLE);
-        new android.os.Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setVisibility(View.GONE);
-            }
-        }, time);
+
+        if (sticky) {
+
+        } else {
+            new android.os.Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setVisibility(View.GONE);
+                }
+            }, time);
+        }
     }
 }

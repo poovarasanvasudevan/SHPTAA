@@ -4,32 +4,32 @@
     "child": [
       {
         "name": "Books",
-        "action": "in.shpt.activity.HomeActivity",
+        "action": "in.shpt.activity.BookActivity_",
         "icon": "ion_ios_book"
       },
       {
         "name": "Photos",
-        "action": "in.shpt.activity.HomeActivity",
+        "action": "in.shpt.activity.HomeActivity_",
         "icon": "ion_image"
       },
       {
         "name": "Audio Tapes",
-        "action": "in.shpt.activity.HomeActivity",
+        "action": "in.shpt.activity.HomeActivity_",
         "icon": "ion_ios_musical_note"
       },
       {
         "name": "Video Tapes",
-        "action": "in.shpt.activity.HomeActivity",
+        "action": "in.shpt.activity.HomeActivity_",
         "icon": "ion_ios_videocam"
       },
       {
         "name": "Gadgets",
-        "action": "in.shpt.activity.HomeActivity",
+        "action": "in.shpt.activity.HomeActivity_",
         "icon": "ion_ios_eye"
       },
       {
         "name": "Magazines",
-        "action": "in.shpt.activity.HomeActivity",
+        "action": "in.shpt.activity.HomeActivity_",
         "icon": "ion_images"
       }
     ]
@@ -39,22 +39,22 @@
     "child": [
       {
         "name": "My Accounts",
-        "action": "in.shpt.activity.HomeActivity",
+        "action": "in.shpt.activity.HomeActivity_",
         "icon": "ion_ios_home"
       },
       {
         "name": "Address Book",
-        "action": "in.shpt.activity.HomeActivity",
+        "action": "in.shpt.activity.HomeActivity_",
         "icon": "ion_ios_book"
       },
       {
         "name": "My Orders",
-        "action": "in.shpt.activity.HomeActivity",
+        "action": "in.shpt.activity.HomeActivity_",
         "icon": "ion_ios_cart"
       },
       {
         "name": "Credits",
-        "action": "in.shpt.activity.HomeActivity",
+        "action": "in.shpt.activity.HomeActivity_",
         "icon": "ion_cash"
       }
     ]

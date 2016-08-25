@@ -1,14 +1,19 @@
 package in.shpt.application;
 
 import android.app.Application;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mikepenz.iconics.Iconics;
 
 import org.androidannotations.annotations.EApplication;
+import org.androidannotations.annotations.SystemService;
 
 import in.shpt.networking.APIProvider;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -23,6 +28,9 @@ public class SHPT extends Application {
     String BASE_URL = "http://10.0.2.2:8080/";
     APIProvider apiService = null;
 
+    @SystemService
+    ConnectivityManager connectivityManager;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -36,9 +44,14 @@ public class SHPT extends Application {
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                     .create();
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
+                    .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
 
@@ -49,4 +62,25 @@ public class SHPT extends Application {
             return apiService;
         }
     }
+
+
+    public boolean isInternetAvailable() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+
+        NetworkInfo[] netInfo = connectivityManager
+                .getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
+
+
 }
