@@ -75,6 +75,9 @@ public class HomeActivity extends AppCompatActivity {
     ImageButton searchButton;
 
     @ViewById
+    ImageButton codeButton;
+
+    @ViewById
     LinearLayout networkProblemLayout;
 
     Boolean connection;
@@ -109,6 +112,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         searchButton.setImageDrawable(icons.getIcon(Ionicons.Icon.ion_ios_search, 20, Color.DKGRAY));
+        codeButton.setImageDrawable(icons.getIcon(Ionicons.Icon.ion_ios_barcode, 20, Color.DKGRAY));
 
         setUpNavBarMenu();
 
@@ -148,7 +152,11 @@ public class HomeActivity extends AppCompatActivity {
 
         new LatestProductLoader().execute(5,3);
 
+
+
     }
+
+
 
     @Override
     protected void onPause() {

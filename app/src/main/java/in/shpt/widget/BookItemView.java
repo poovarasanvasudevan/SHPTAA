@@ -37,29 +37,35 @@ public class BookItemView extends LinearLayout {
     @Bean
     Icons icons;
 
+    @ViewById
+    TextView freeShippingLabel;
+
     in.shpt.models.products.book.Product product = null;
 
     public BookItemView(Context context) {
         super(context);
-        this.context =context;
+        this.context = context;
     }
 
     public BookItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context =context;
+        this.context = context;
     }
 
     public BookItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context =context;
+        this.context = context;
     }
 
     public void bind(in.shpt.models.products.book.Product product) {
 
         bookProductName.setText(product.getName());
         bookProductCost.setText(product.getPrice());
-        icons.displayImage(product.getThumb(),bookProductImage);
+        icons.displayImage(product.getThumb(), bookProductImage);
+        if (product.isFreeShipping()) {
 
+            freeShippingLabel.setVisibility(VISIBLE);
+        }
         this.product = product;
     }
 }
