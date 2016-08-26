@@ -62,7 +62,7 @@ public class BookItemView extends LinearLayout {
         bookProductName.setText(product.getName());
         bookProductCost.setText(product.getPrice());
         icons.displayImage(product.getThumb(), bookProductImage);
-        if (product.isFreeShipping()) {
+        if (product.getFreeShippingDate() != null) {
 
             freeShippingLabel.setVisibility(VISIBLE);
         }
