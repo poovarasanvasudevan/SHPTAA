@@ -2,7 +2,7 @@ package in.shpt.networking;
 
 import java.util.List;
 
-import in.shpt.models.language.CommonCategoriesFormat;
+import in.shpt.models.language.CommonCategoryFormat;
 import in.shpt.models.products.Product;
 import in.shpt.models.products.book.Books;
 import retrofit2.Call;
@@ -31,7 +31,7 @@ public interface APIProvider {
     );
 
     @GET("index.php?route=product/category")
-    Call<CommonCategoriesFormat> getLanguages(
+    Call<CommonCategoryFormat> getLanguages(
             @Query("path") String path,
             @Query("webapi") boolean webapi
     );

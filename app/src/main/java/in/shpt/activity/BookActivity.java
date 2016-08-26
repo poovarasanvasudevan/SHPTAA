@@ -19,14 +19,18 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import carbon.widget.ProgressBar;
 import in.shpt.R;
 import in.shpt.adapter.BookListAdapter;
 import in.shpt.application.SHPT;
+import in.shpt.models.common.Categories;
 import in.shpt.models.products.book.Books;
+import in.shpt.models.products.book.Category;
 import in.shpt.models.products.book.Sort;
 import in.shpt.networking.ProductWorker;
 import in.shpt.preference.Icons;
@@ -64,14 +68,12 @@ public class BookActivity extends AppCompatActivity {
     @App
     SHPT shpt;
 
+    Books books;
+
+    String PATH = "1";
+
     @ViewById
     AlertMaker alertMaker;
-
-    final String[] authorArray = new String[]{"全部城市", "北京", "上海", "广州", "深圳"};
-    final String[] sortArray = new String[]{"性别", "男", "女"};
-
-
-    String[] Language;
     List<String> sortList;
     List<Sort> sort;
     String page = "";
@@ -79,6 +81,9 @@ public class BookActivity extends AppCompatActivity {
     String sortingType = null;
     String orderType = null;
     boolean menuAdded = false;
+    List<String[]> items = new ArrayList<>();
+    List<Categories> lang;
+    List<Categories> auth;
 
     @AfterViews
     public void init() {
@@ -95,12 +100,6 @@ public class BookActivity extends AppCompatActivity {
         new AsyncBookLoader().execute("1", "1", sortingType, orderType);
 
 
-        Language = new String[]{
-                "Author",
-                "Sort",
-                "Language"
-        };
-        languageMenu.setmMenuCount(3);
         languageMenu.setmShowCount(6);
         languageMenu.setShowCheck(true);
         languageMenu.setmMenuTitleTextSize(14);
@@ -113,11 +112,9 @@ public class BookActivity extends AppCompatActivity {
         languageMenu.setmCheckIcon(R.drawable.ico_make);
         languageMenu.setmUpArrow(R.drawable.arrow_up);
         languageMenu.setmDownArrow(R.drawable.arrow_down);
-        languageMenu.setShowDivider(true);
         languageMenu.setmMenuListBackColor(getResources().getColor(R.color.white));
         languageMenu.setmMenuListSelectorRes(R.color.white);
         languageMenu.setmArrowMarginTitle(20);
-        languageMenu.setDefaultMenuTitle(Language);
 
 
         languageMenu.setMenuSelectedListener(new OnMenuSelectedListener() {
@@ -125,21 +122,24 @@ public class BookActivity extends AppCompatActivity {
             public void onSelected(View listview, int RowIndex, int ColumnIndex) {
                 switch (ColumnIndex) {
                     case 0:
-
-                        break;
-
                     case 1: {
+                        PATH = lang.get(RowIndex).getPath();
+                        page = "1";
+                        bookListAdapter.clearData();
+                        new AsyncBookLoader().execute(String.valueOf(page), PATH, sortingType, orderType);
+                        break;
+                    }
+                    case 2: {
+                        PATH = lang.get(RowIndex).getPath();
                         String[] splitType = sort.get(RowIndex).getValue().split("-");
                         sortingType = splitType[0];
                         orderType = splitType[1];
                         page = "1";
                         bookListAdapter.clearData();
-                        new AsyncBookLoader().execute(String.valueOf(page), "1", sortingType, orderType);
+                        new AsyncBookLoader().execute(String.valueOf(page), PATH, sortingType, orderType);
                         break;
                     }
-                    case 2:
 
-                        break;
                 }
                 Log.i("MainActivity", "select " + ColumnIndex + " column and " + RowIndex + " row");
             }
@@ -148,13 +148,12 @@ public class BookActivity extends AppCompatActivity {
         bookLoader.addOnScrollListener(new EndlessScroll(llm) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                new AsyncBookLoader().execute(String.valueOf(page), "1", sortingType, orderType);
+                new AsyncBookLoader().execute(String.valueOf(page), PATH, sortingType, orderType);
             }
         });
 
 
     }
-
 
 
     class AsyncBookLoader extends AsyncTask<String, Void, Books> {
@@ -199,20 +198,24 @@ public class BookActivity extends AppCompatActivity {
                     getSupportActionBar().setSubtitle(bookList.getDescription());
 
                     if (menuAdded == false) {
-                        sortList = new ArrayList<>();
-                        sort = new ArrayList<>();
-                        for (Sort sorts : bookList.getSorts()) {
-                            sortList.add(sorts.getText().replace("&gt;", ">"));
-                            sort.add(sorts);
+                        books = bookList;
 
+                        List<String> title = new ArrayList<>();
+                        List<String> href = new ArrayList<>();
+
+                        for (Category category : bookList.getCategories()) {
+                            String hrefUrl = category.getHref();
+                            title.add(category.getName());
+                            href.add(hrefUrl.substring(hrefUrl.indexOf("path="), hrefUrl.length()).replace("path=", "").replace(":", "").trim());
                         }
-                        List<String[]> items = new ArrayList<>();
-                        items.add(authorArray);
-                        items.add(sortList.toArray(new String[0]));
-                        items.add(sortArray);
-                        languageMenu.setmMenuItems(items);
-                        languageMenu.setmUpArrow(R.drawable.arrow_up);
-                        languageMenu.setmDownArrow(R.drawable.arrow_down);
+
+                        title.add("Sort");
+                        languageMenu.setmMenuCount(title.size());
+                        languageMenu.setDefaultMenuTitle(title.toArray(new String[0]));
+
+                        new LanguageAndAuthorLoader().execute(href.get(0), href.get(1));
+
+
                         menuAdded = true;
                     }
 
@@ -227,6 +230,62 @@ public class BookActivity extends AppCompatActivity {
                 }
             } else {
                 alertMaker.makeAlert(getString(R.string.no_internet_connection), AlertMakerEnum.FAILURE, true);
+            }
+        }
+    }
+
+    class LanguageAndAuthorLoader extends AsyncTask<String, Void, HashMap<String, List<Categories>>> {
+
+        @Override
+        protected HashMap<String, List<Categories>> doInBackground(String... strings) {
+            try {
+                return productWorker.getLaguageAndAuthors(
+                        strings[0],
+                        strings[1]
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(HashMap<String, List<Categories>> stringListHashMap) {
+            super.onPostExecute(stringListHashMap);
+
+            if (stringListHashMap != null) {
+                lang = stringListHashMap.get("language");
+                auth = stringListHashMap.get("author");
+
+                List<String> langString = new ArrayList<>();
+                List<String> authString = new ArrayList<>();
+
+                for (Categories c : lang) {
+                    langString.add(c.getName());
+
+                    Log.i("Lang", c.getPath());
+                }
+                for (Categories c : auth) {
+                    authString.add(c.getName());
+                    Log.i("Auth", c.getPath());
+                }
+
+                items.add(langString.toArray(new String[0]));
+                items.add(authString.toArray(new String[0]));
+                sortList = new ArrayList<>();
+                sort = new ArrayList<>();
+                for (Sort sorts : books.getSorts()) {
+                    sortList.add(sorts.getText().replace("&gt;", ">"));
+                    sort.add(sorts);
+
+                }
+
+                items.add(sortList.toArray(new String[0]));
+                languageMenu.setmMenuItems(items);
+                languageMenu.setmUpArrow(R.drawable.arrow_up);
+                languageMenu.setmDownArrow(R.drawable.arrow_down);
+
             }
         }
     }
