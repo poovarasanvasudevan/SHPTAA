@@ -1,0 +1,9 @@
+ if(isset($this->request->get['webapi'])){
+                unset($this->data['pagination']);
+                 unset($this->data['continue']);
+
+                echo json_encode($this->data);
+                die;
+            } else {
+                 $this->response->setOutput($this->render());
+            }
