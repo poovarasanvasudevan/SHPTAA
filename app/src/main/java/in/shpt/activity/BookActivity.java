@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.jayfang.dropdownmenu.DropDownMenu;
@@ -96,6 +95,7 @@ public class BookActivity extends AppCompatActivity {
         bookLoader.setLayoutManager(llm);
 
 
+
         //languageMenu.setImageDrawable(icons.getIcon(Ionicons.Icon.ion_android_apps, 24, Color.BLACK));
         new AsyncBookLoader().execute("1", "1", sortingType, orderType);
 
@@ -121,16 +121,23 @@ public class BookActivity extends AppCompatActivity {
             @Override
             public void onSelected(View listview, int RowIndex, int ColumnIndex) {
                 switch (ColumnIndex) {
-                    case 0:
-                    case 1: {
+                    case 0: {
+
                         PATH = lang.get(RowIndex).getPath();
+                        page = "1";
+                        bookListAdapter.clearData();
+                        new AsyncBookLoader().execute(String.valueOf(page), PATH, sortingType, orderType);
+                        break;
+
+                    }
+                    case 1: {
+                        PATH = auth.get(RowIndex).getPath();
                         page = "1";
                         bookListAdapter.clearData();
                         new AsyncBookLoader().execute(String.valueOf(page), PATH, sortingType, orderType);
                         break;
                     }
                     case 2: {
-                        PATH = lang.get(RowIndex).getPath();
                         String[] splitType = sort.get(RowIndex).getValue().split("-");
                         sortingType = splitType[0];
                         orderType = splitType[1];
@@ -141,14 +148,14 @@ public class BookActivity extends AppCompatActivity {
                     }
 
                 }
-                Log.i("MainActivity", "select " + ColumnIndex + " column and " + RowIndex + " row");
+
             }
         });
 
         bookLoader.addOnScrollListener(new EndlessScroll(llm) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                new AsyncBookLoader().execute(String.valueOf(page), PATH, sortingType, orderType);
+                new AsyncBookLoader().execute(String.valueOf(page +1), PATH, sortingType, orderType);
             }
         });
 
@@ -220,6 +227,7 @@ public class BookActivity extends AppCompatActivity {
                     }
 
 
+                    // bookListAdapter.clearData();
                     bookListAdapter.addData(bookList.getProducts());
                     bookLoader.setAdapter(bookListAdapter);
 
@@ -264,11 +272,10 @@ public class BookActivity extends AppCompatActivity {
                 for (Categories c : lang) {
                     langString.add(c.getName());
 
-                    Log.i("Lang", c.getPath());
                 }
                 for (Categories c : auth) {
                     authString.add(c.getName());
-                    Log.i("Auth", c.getPath());
+
                 }
 
                 items.add(langString.toArray(new String[0]));
@@ -290,6 +297,19 @@ public class BookActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        page = "1";
+        PATH = "1";
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        page = "1";
+        PATH = "1";
+    }
 
     @OptionsItem(android.R.id.home)
     public void homeClicked() {
