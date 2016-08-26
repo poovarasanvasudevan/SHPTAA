@@ -8,12 +8,12 @@
     tools:context="in.shpt.activity.HomeActivity">
 
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
     <android.support.v4.widget.DrawerLayout
@@ -31,10 +31,10 @@
 
             <carbon.widget.CardView
                 android:id="@+id/searchCard"
-                app:cardElevation="4dp"
-                app:carbon_cornerRadius="0dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:carbon_cornerRadius="0dp"
+                app:cardElevation="4dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -49,19 +49,11 @@
 
                     <EditText
                         android:id="@+id/searchView"
-                        android:layout_toRightOf="@+id/searchButton"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
+                        android:layout_toRightOf="@+id/searchButton"
                         android:background="@null"
-                        android:layout_toLeftOf="@+id/codeButton"
                         android:hint="@string/search_box_hint" />
-
-                    <ImageButton
-                        android:id="@+id/codeButton"
-                        android:layout_width="48dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_height="48dp"
-                        android:background="@null" />
                 </RelativeLayout>
 
             </carbon.widget.CardView>
@@ -74,8 +66,8 @@
 
             <carbon.widget.ScrollView
                 android:layout_width="match_parent"
-                android:layout_below="@+id/searchCard"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_below="@+id/searchCard">
 
 
                 <carbon.widget.RelativeLayout
@@ -83,28 +75,23 @@
                     android:layout_height="match_parent">
 
 
-
                     <carbon.widget.LinearLayout
+                        android:id="@+id/latestProductCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/searchCard"
-                        android:id="@+id/latestProductCard"
                         android:orientation="vertical">
 
                         <in.shpt.ui.ProductSwipeCard_
-                            android:layout_width="match_parent"
                             android:id="@+id/latestProduct"
+                            android:layout_width="match_parent"
                             android:layout_height="170dp" />
 
                         <android.support.v7.widget.RecyclerView
-                            android:layout_width="match_parent"
                             android:id="@+id/popularProductList"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </carbon.widget.LinearLayout>
-
-
-
-
 
 
                     <carbon.widget.LinearLayout

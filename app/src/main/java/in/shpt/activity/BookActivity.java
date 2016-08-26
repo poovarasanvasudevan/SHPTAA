@@ -33,11 +33,10 @@ import in.shpt.preference.Icons;
 import in.shpt.shptenum.AlertMakerEnum;
 import in.shpt.ui.AlertMaker;
 import in.shpt.widget.EndlessScroll;
-import in.shpt.widget.LanguageContextMenu;
 
 
 @EActivity(R.layout.activity_book)
-public class BookActivity extends AppCompatActivity implements LanguageContextMenu.OnFeedContextMenuItemClickListener {
+public class BookActivity extends AppCompatActivity {
 
     @Bean
     ProductWorker productWorker;
@@ -156,25 +155,6 @@ public class BookActivity extends AppCompatActivity implements LanguageContextMe
 
     }
 
-    @Override
-    public void onReportClick(int feedItem) {
-
-    }
-
-    @Override
-    public void onSharePhotoClick(int feedItem) {
-
-    }
-
-    @Override
-    public void onCopyShareUrlClick(int feedItem) {
-
-    }
-
-    @Override
-    public void onCancelClick(int feedItem) {
-
-    }
 
 
     class AsyncBookLoader extends AsyncTask<String, Void, Books> {
