@@ -23,7 +23,6 @@ import com.mikepenz.ionicons_typeface_library.Ionicons;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
@@ -111,7 +110,7 @@ public class HomeActivity extends AppCompatActivity {
 
         searchButton.setImageDrawable(icons.getIcon(Ionicons.Icon.ion_ios_search, 20, Color.DKGRAY));
 
-        setUpNavBarMenu();
+
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -147,13 +146,52 @@ public class HomeActivity extends AppCompatActivity {
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
-        new LatestProductLoader().execute(5,3);
 
+
+        new MenuLoader().execute();
 
 
     }
 
 
+    class MenuLoader extends AsyncTask<Void,Void,List<SHPTNavMenu>> {
+        @Override
+        protected List<SHPTNavMenu> doInBackground(Void... voids) {
+            String navString = readNavBar();
+            Type listType = new TypeToken<List<SHPTNavMenu>>() {
+            }.getType();
+            List<SHPTNavMenu> yourList = new Gson().fromJson(readNavBar(), listType);
+
+
+            return yourList;
+        }
+
+        @Override
+        protected void onPostExecute(List<SHPTNavMenu> shptNavMenus) {
+            super.onPostExecute(shptNavMenus);
+            navMenu = navigationView.getMenu();
+            for (int i = 0; i < shptNavMenus.size(); i++) {
+                SubMenu submenu = navMenu.addSubMenu(shptNavMenus.get(i).getTitle());
+                for (int j = 0; j < shptNavMenus.get(i).getChild().size(); j++) {
+
+                    Class c = null;
+                    try {
+                        c = Class.forName(shptNavMenus.get(i).getChild().get(j).getAction());
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    Intent intent = new Intent(HomeActivity.this,c);
+
+                    submenu.add(shptNavMenus.get(i).getChild().get(j).getName())
+                            .setIcon(icons.getIcon(shptNavMenus.get(i).getChild().get(j).getIcon()))
+                            .setIntent(intent);
+
+                    new LatestProductLoader().execute(5,3);
+                }
+            }
+        }
+    }
 
     @Override
     protected void onPause() {
@@ -177,6 +215,7 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         protected HashMap<String, List<Product>> doInBackground(Integer... integers) {
             try {
+
                 if(shpt.isInternetAvailable()) {
                     HashMap<String, List<Product>> productHash = new HashMap<>();
                     productHash.put("latest", productWorker.getLatestProducts(integers[0]));
@@ -212,7 +251,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    @Background
+
     public void setUpNavBarMenu() {
         Type listType = new TypeToken<List<SHPTNavMenu>>() {
         }.getType();
