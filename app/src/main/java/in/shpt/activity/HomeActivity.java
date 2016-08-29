@@ -187,9 +187,11 @@ public class HomeActivity extends AppCompatActivity {
                             .setIcon(icons.getIcon(shptNavMenus.get(i).getChild().get(j).getIcon()))
                             .setIntent(intent);
 
-                    new LatestProductLoader().execute(5,3);
+
                 }
             }
+            new LatestProductLoader().execute(5,3);
+
         }
     }
 
