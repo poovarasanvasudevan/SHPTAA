@@ -56,6 +56,18 @@
             android:visibility="gone"
             android:layout_height="40dp" />
 
+        <carbon.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:backgroundTint="@color/carbon_white"
+            app:fabSize="normal"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="16dp"
+            android:visibility="gone"
+            android:id="@+id/fabIcon"
+            android:src="@drawable/ic_arrow_up2"
+            android:layout_marginBottom="16dp"
+            android:layout_height="wrap_content" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/bookLoader"
@@ -68,6 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true" />
+
+
     </RelativeLayout>
 
 </carbon.widget.RelativeLayout>

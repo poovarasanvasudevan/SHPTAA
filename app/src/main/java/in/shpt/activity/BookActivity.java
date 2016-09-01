@@ -14,6 +14,7 @@ import com.jayfang.dropdownmenu.OnMenuSelectedListener;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
@@ -62,6 +63,9 @@ public class BookActivity extends AppCompatActivity {
     @ViewById
     ProgressBar bookProgress;
 
+    @ViewById
+    carbon.widget.FloatingActionButton fabIcon;
+
     android.widget.PopupMenu languagePopup;
 
     @App
@@ -83,6 +87,7 @@ public class BookActivity extends AppCompatActivity {
     List<String[]> items = new ArrayList<>();
     List<Categories> lang;
     List<Categories> auth;
+    int scrollDY = 0;
 
     @AfterViews
     public void init() {
@@ -93,7 +98,6 @@ public class BookActivity extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         bookLoader.setLayoutManager(llm);
-
 
 
         //languageMenu.setImageDrawable(icons.getIcon(Ionicons.Icon.ion_android_apps, 24, Color.BLACK));
@@ -110,8 +114,6 @@ public class BookActivity extends AppCompatActivity {
         languageMenu.setmMenuPressedBackColor(Color.parseColor("#eeeeee"));
         languageMenu.setmMenuPressedTitleTextColor(Color.BLACK);
         languageMenu.setmCheckIcon(R.drawable.ico_make);
-        languageMenu.setmUpArrow(R.drawable.arrow_up);
-        languageMenu.setmDownArrow(R.drawable.arrow_down);
         languageMenu.setmMenuListBackColor(getResources().getColor(R.color.white));
         languageMenu.setmMenuListSelectorRes(R.color.white);
         languageMenu.setmArrowMarginTitle(20);
@@ -127,6 +129,7 @@ public class BookActivity extends AppCompatActivity {
                         page = "1";
                         bookListAdapter.clearData();
                         new AsyncBookLoader().execute(String.valueOf(page), PATH, sortingType, orderType);
+
                         break;
 
                     }
@@ -155,11 +158,39 @@ public class BookActivity extends AppCompatActivity {
         bookLoader.addOnScrollListener(new EndlessScroll(llm) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                new AsyncBookLoader().execute(String.valueOf(page +1), PATH, sortingType, orderType);
+                new AsyncBookLoader().execute(String.valueOf(page + 1), PATH, sortingType, orderType);
+
             }
         });
 
 
+
+
+
+    }
+
+    RecyclerView.OnScrollListener listener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            scrollDY += dy;
+            if(scrollDY > 1500){
+                fabIcon.setVisibility(View.VISIBLE);
+            } else {
+                fabIcon.setVisibility(View.GONE);
+            }
+            super.onScrolled(recyclerView, dx, dy);
+        }
+    };
+
+    @Click(R.id.fabIcon)
+    public void fabIconClicked(View v) {
+        bookLoader.smoothScrollToPosition(0);
+        v.setVisibility(View.GONE);
     }
 
 
@@ -222,7 +253,10 @@ public class BookActivity extends AppCompatActivity {
 
                         new LanguageAndAuthorLoader().execute(href.get(0), href.get(1));
 
+                        fabIcon.setVisibility(View.GONE);
+                        scrollDY = 0;
 
+                        bookLoader.addOnScrollListener(listener);
                         menuAdded = true;
                     }
 
@@ -237,7 +271,7 @@ public class BookActivity extends AppCompatActivity {
                     bookProgress.setVisibility(View.GONE);
                 }
             } else {
-                alertMaker.makeAlert(getString(R.string.no_internet_connection), AlertMakerEnum.FAILURE, true);
+                alertMaker.makeAlert(getString(R.string.server_error), AlertMakerEnum.FAILURE, true);
             }
         }
     }
