@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.androidannotations.annotations.AfterViews;
@@ -45,11 +44,6 @@ public class LoginActivity extends AppCompatActivity {
                 public void done(ParseUser user, ParseException e) {
                     if (user != null) {
 
-                        ParseObject gameScore = new ParseObject("GameScore");
-                        gameScore.put("score", 1337);
-                        gameScore.put("playerName", "Sean Plott");
-                        gameScore.put("cheatMode", false);
-                        gameScore.saveInBackground();
 
                         HomeActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
                         finish();

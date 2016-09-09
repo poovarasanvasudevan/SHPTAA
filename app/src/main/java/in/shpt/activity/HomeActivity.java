@@ -23,6 +23,7 @@ import com.mikepenz.ionicons_typeface_library.Ionicons;
 import com.parse.ConfigCallback;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
@@ -47,6 +48,7 @@ import carbon.widget.LinearLayout;
 import in.shpt.R;
 import in.shpt.adapter.ProductListAdapter;
 import in.shpt.application.SHPT;
+import in.shpt.config.Config;
 import in.shpt.core.models.SHPTNavMenu;
 import in.shpt.models.products.Product;
 import in.shpt.networking.ProductWorker;
@@ -114,8 +116,6 @@ public class HomeActivity extends AppCompatActivity {
         searchButton.setImageDrawable(icons.getIcon(Ionicons.Icon.ion_ios_search, 20, Color.DKGRAY));
 
 
-
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -150,37 +150,38 @@ public class HomeActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
 
 
-
-
         new MenuLoader().execute();
-
 
 
         ParseConfig.getInBackground(new ConfigCallback() {
             @Override
             public void done(ParseConfig config, ParseException e) {
-                if(e !=null && config !=null) {
-                    String coupon_discount = config.getString("coupon_discount", null);
-                    if (coupon_discount != null) {
-                        alertMaker.makeAlert(coupon_discount, AlertMakerEnum.FAILURE, true);
-                    }
+
+                String coupon_discount = config.getString(Config.DISCOUNT_MESSAGE, null);
+                if (coupon_discount != null) {
+                    alertMaker.makeAlert(coupon_discount, AlertMakerEnum.FAILURE, true);
                 }
+
             }
         });
 
 
+        ParseObject gameScore = new ParseObject("GameScore");
+        gameScore.put("score", 1337);
+        gameScore.put("playerName", "Sean Plott");
+        gameScore.put("cheatMode", false);
+        gameScore.saveInBackground();
 
     }
 
 
-    class MenuLoader extends AsyncTask<Void,Void,List<SHPTNavMenu>> {
+    class MenuLoader extends AsyncTask<Void, Void, List<SHPTNavMenu>> {
         @Override
         protected List<SHPTNavMenu> doInBackground(Void... voids) {
             String navString = readNavBar();
             Type listType = new TypeToken<List<SHPTNavMenu>>() {
             }.getType();
             List<SHPTNavMenu> yourList = new Gson().fromJson(readNavBar(), listType);
-
 
 
             return yourList;
@@ -201,7 +202,7 @@ public class HomeActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    Intent intent = new Intent(HomeActivity.this,c);
+                    Intent intent = new Intent(HomeActivity.this, c);
 
                     submenu.add(shptNavMenus.get(i).getChild().get(j).getName())
                             .setIcon(icons.getIcon(shptNavMenus.get(i).getChild().get(j).getIcon()))
@@ -210,8 +211,10 @@ public class HomeActivity extends AppCompatActivity {
 
                 }
             }
-            new LatestProductLoader().execute(5,3);
 
+            if (shpt.isInternetAvailable()) {
+                new LatestProductLoader().execute(5, 3);
+            }
         }
     }
 
@@ -238,12 +241,12 @@ public class HomeActivity extends AppCompatActivity {
         protected HashMap<String, List<Product>> doInBackground(Integer... integers) {
             try {
 
-                if(shpt.isInternetAvailable()) {
+                if (shpt.isInternetAvailable()) {
                     HashMap<String, List<Product>> productHash = new HashMap<>();
                     productHash.put("latest", productWorker.getLatestProducts(integers[0]));
                     productHash.put("popular", productWorker.getPopularProducts(integers[1]));
                     return productHash;
-                } else{
+                } else {
                     return null;
                 }
             } catch (IOException e) {
@@ -255,23 +258,25 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(HashMap<String, List<Product>> products) {
 
-            if(products == null){
+            if (products == null) {
                 networkProblemLayout.setVisibility(View.VISIBLE);
             } else {
-                latestProduct.setUpPager(getSupportFragmentManager(), products.get("latest"));
-                //homeSwipePager.setUp(getSupportFragmentManager(), products);
+                if (products.get("latest") != null && products.get("latest").size() > 0) {
+                    latestProduct.setUpPager(getSupportFragmentManager(), products.get("latest"));
+                    //homeSwipePager.setUp(getSupportFragmentManager(), products);
 
-                LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
-                llm.setOrientation(LinearLayoutManager.VERTICAL);
-                popularProductList.setLayoutManager(llm);
-                productListAdapter.addData(products.get("popular"));
-                popularProductList.setAdapter(productListAdapter);
+                    LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
+                    llm.setOrientation(LinearLayoutManager.VERTICAL);
+                    popularProductList.setLayoutManager(llm);
+                    productListAdapter.addData(products.get("popular"));
+                    popularProductList.setAdapter(productListAdapter);
+                }
+
 
             }
             super.onPostExecute(products);
         }
     }
-
 
 
     public void setUpNavBarMenu() {
@@ -291,11 +296,11 @@ public class HomeActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                Intent intent = new Intent(HomeActivity.this,c);
+                Intent intent = new Intent(HomeActivity.this, c);
 
                 submenu.add(yourList.get(i).getChild().get(j).getName())
                         .setIcon(icons.getIcon(yourList.get(i).getChild().get(j).getIcon()))
-                .setIntent(intent);
+                        .setIntent(intent);
             }
         }
     }

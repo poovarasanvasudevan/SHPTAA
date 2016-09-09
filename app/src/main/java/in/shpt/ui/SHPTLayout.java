@@ -12,6 +12,7 @@ import org.androidannotations.annotations.ViewById;
 
 import carbon.widget.RelativeLayout;
 import in.shpt.R;
+import in.shpt.config.Config;
 import in.shpt.shptenum.AlertMakerEnum;
 
 /**
@@ -39,16 +40,16 @@ public class SHPTLayout extends RelativeLayout {
     }
 
 
-    public void verifyCouponNotification(){
+    public void verifyCouponNotification() {
         ParseConfig.getInBackground(new ConfigCallback() {
             @Override
             public void done(ParseConfig config, ParseException e) {
-                if(e!=null && config !=null) {
-                    String coupon_discount = config.getString("coupon_discount", null);
-                    if (coupon_discount != null) {
-                        alertMaker.makeAlert(coupon_discount, AlertMakerEnum.FAILURE, true);
-                    }
+
+                String coupon_discount = config.getString(Config.DISCOUNT_MESSAGE, null);
+                if (coupon_discount != null) {
+                    alertMaker.makeAlert(coupon_discount, AlertMakerEnum.FAILURE, true);
                 }
+
             }
         });
 

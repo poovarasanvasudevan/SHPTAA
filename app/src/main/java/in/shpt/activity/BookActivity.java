@@ -247,7 +247,7 @@ public class BookActivity extends AppCompatActivity {
                             href.add(hrefUrl.substring(hrefUrl.indexOf("path="), hrefUrl.length()).replace("path=", "").replace(":", "").trim());
                         }
 
-                        title.add("Sort");
+                        title.add("SORT");
                         languageMenu.setmMenuCount(title.size());
                         languageMenu.setDefaultMenuTitle(title.toArray(new String[0]));
 

@@ -47,9 +47,9 @@ public class SHPT extends Application {
 
 
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("shptApp")
+                .applicationId("SHPTAPP")
                 .enableLocalDataStore()
-                .clientKey("shptApp")
+                .clientKey("SHPTKEY")
                 .server("http://10.0.2.2:1337/parse/")
                 .build()
         );
