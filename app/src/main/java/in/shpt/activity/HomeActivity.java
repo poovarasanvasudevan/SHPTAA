@@ -20,6 +20,9 @@ import android.widget.ImageButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mikepenz.ionicons_typeface_library.Ionicons;
+import com.parse.ConfigCallback;
+import com.parse.ParseConfig;
+import com.parse.ParseException;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
@@ -148,7 +151,23 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
+
         new MenuLoader().execute();
+
+
+
+        ParseConfig.getInBackground(new ConfigCallback() {
+            @Override
+            public void done(ParseConfig config, ParseException e) {
+                if(e !=null && config !=null) {
+                    String coupon_discount = config.getString("coupon_discount", null);
+                    if (coupon_discount != null) {
+                        alertMaker.makeAlert(coupon_discount, AlertMakerEnum.FAILURE, true);
+                    }
+                }
+            }
+        });
+
 
 
     }
@@ -161,6 +180,7 @@ public class HomeActivity extends AppCompatActivity {
             Type listType = new TypeToken<List<SHPTNavMenu>>() {
             }.getType();
             List<SHPTNavMenu> yourList = new Gson().fromJson(readNavBar(), listType);
+
 
 
             return yourList;

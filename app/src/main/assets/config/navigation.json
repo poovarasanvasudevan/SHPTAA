@@ -48,6 +48,11 @@
         "icon": "ion_ios_book"
       },
       {
+        "name": "Wish List",
+        "action": "in.shpt.activity.HomeActivity_",
+        "icon": "ion_star"
+      },
+      {
         "name": "My Orders",
         "action": "in.shpt.activity.HomeActivity_",
         "icon": "ion_ios_cart"
@@ -56,6 +61,16 @@
         "name": "Credits",
         "action": "in.shpt.activity.HomeActivity_",
         "icon": "ion_cash"
+      },
+      {
+        "name": "NewsLetter",
+        "action": "in.shpt.activity.HomeActivity_",
+        "icon": "ion_ios_paper"
+      },
+      {
+        "name": "Logout",
+        "action": "in.shpt.activity.HomeActivity_",
+        "icon": "ion_log_out"
       }
     ]
   }

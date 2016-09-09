@@ -70,24 +70,10 @@ public class ProductCardFragment extends Fragment {
         productDescription.setText(allProduct.getMeta_description());
         productTitle.setText(allProduct.getName());
 
-        boolean isJpg = allProduct.getImage().contains(".jpg");
-
-
-
-
-        imageUrl = allProduct.getImage().replace(".png", "");
-        imageUrl = imageUrl.replace(".jpg", "");
-        imageUrl = imageUrl + "-550x550";
-
-        if (isJpg)
-            imageUrl = imageUrl + ".jpg";
-        else
-            imageUrl = imageUrl + ".png";
-
-
-        String image = "https://shptqa.dev4srcm.org/image/cache/" + imageUrl;
+        String image = "http://10.0.2.2:8080/image/" + allProduct.getImage();
+//        Log.i("Image",image);
         Picasso.with(getContext())
-                .load("https://shptqa.dev4srcm.org/image/cache/" + imageUrl)
+                .load(image)
                 .resize(220, 300)
                 .into(productImage);
 

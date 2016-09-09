@@ -100,7 +100,7 @@ public class BookActivity extends AppCompatActivity {
         bookLoader.setLayoutManager(llm);
 
 
-        //languageMenu.setImageDrawable(icons.getIcon(Ionicons.Icon.ion_android_apps, 24, Color.BLACK));
+        //languageMenu.setImageDrawable(icons.getIcon(Ionicons.Icon.ion_ios_paper, 24, Color.BLACK));
         new AsyncBookLoader().execute("1", "1", sortingType, orderType);
 
 

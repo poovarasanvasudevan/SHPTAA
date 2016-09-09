@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<carbon.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<in.shpt.ui.SHPTLayout_ xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -75,13 +75,6 @@
             android:background="#fff"
             android:layout_height="match_parent" />
 
-        <in.shpt.ui.AlertMaker_
-            android:id="@+id/alertMaker"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
-
-
     </RelativeLayout>
 
-</carbon.widget.RelativeLayout>
+</in.shpt.ui.SHPTLayout_>

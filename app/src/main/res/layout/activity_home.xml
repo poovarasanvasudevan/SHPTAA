@@ -58,15 +58,14 @@
 
             </carbon.widget.CardView>
 
-            <in.shpt.ui.AlertMaker_
-                android:id="@+id/alertMaker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true" />
+
+
 
             <carbon.widget.ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/layout_scroll"
+                android:layout_above="@+id/alertMaker"
                 android:layout_below="@+id/searchCard">
 
 
@@ -117,6 +116,12 @@
                     </carbon.widget.LinearLayout>
                 </carbon.widget.RelativeLayout>
             </carbon.widget.ScrollView>
+
+            <in.shpt.ui.AlertMaker_
+                android:layout_width="match_parent"
+                android:id="@+id/alertMaker"
+                android:layout_alignParentBottom="true"
+                android:layout_height="wrap_content" />
         </carbon.widget.RelativeLayout>
 
         <android.support.design.widget.NavigationView

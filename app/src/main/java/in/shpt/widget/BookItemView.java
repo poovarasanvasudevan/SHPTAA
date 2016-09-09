@@ -1,10 +1,14 @@
 package in.shpt.widget;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
+import android.view.View;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EViewGroup;
+import org.androidannotations.annotations.LongClick;
 import org.androidannotations.annotations.ViewById;
 
 import carbon.widget.CardView;
@@ -67,5 +71,21 @@ public class BookItemView extends LinearLayout {
             freeShippingLabel.setVisibility(VISIBLE);
         }
         this.product = product;
+    }
+
+    @LongClick(R.id.bookProductCard)
+    public void bookLongClikc(View v) {
+        final CharSequence[] items = {
+                "View Product", "Add to Wishlist", "Add to Cart","Cancel"
+        };
+
+        new AlertDialog.Builder(context)
+               // .setTitle("Choose Options")
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+
+                    }
+                })
+                .show();
     }
 }

@@ -1,8 +1,14 @@
 package in.shpt.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -33,7 +39,31 @@ public class LoginActivity extends AppCompatActivity {
 
     @Click(R.id.loginBtn)
     public void loginBtnClicked(View v) {
-        HomeActivity_.intent(this).start();
-        finish();
+
+        if(ParseUser.getCurrentUser() == null) {
+            ParseUser.logInInBackground("poosan", "poosan", new LogInCallback() {
+                public void done(ParseUser user, ParseException e) {
+                    if (user != null) {
+
+                        ParseObject gameScore = new ParseObject("GameScore");
+                        gameScore.put("score", 1337);
+                        gameScore.put("playerName", "Sean Plott");
+                        gameScore.put("cheatMode", false);
+                        gameScore.saveInBackground();
+
+                        HomeActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
+                        finish();
+                    } else {
+                        // Signup failed. Look at the ParseException to see what happened.
+                    }
+                }
+            });
+        } else {
+
+            HomeActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
+            finish();
+
+        }
+
     }
 }

@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mikepenz.iconics.Iconics;
+import com.parse.Parse;
 
 import org.androidannotations.annotations.EApplication;
 import org.androidannotations.annotations.SystemService;
@@ -14,6 +15,7 @@ import org.androidannotations.annotations.SystemService;
 import in.shpt.networking.APIProvider;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import ollie.Ollie;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -36,6 +38,23 @@ public class SHPT extends Application {
         super.onCreate();
 
         Iconics.init(this);
+        Ollie.with(this)
+                .setName("shpt")
+                .setVersion(1)
+                .setLogLevel(Ollie.LogLevel.FULL)
+                .setCacheSize(128)
+                .init();
+
+
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId("shptApp")
+                .enableLocalDataStore()
+                .clientKey("shptApp")
+                .server("http://10.0.2.2:1337/parse/")
+                .build()
+        );
+
+
 
     }
 
@@ -51,7 +70,7 @@ public class SHPT extends Application {
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .client(client)
+                   // .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
 
