@@ -13,12 +13,8 @@ import in.shpt.activity.LoginActivity_;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
 
-
-
-
     @AfterViews
     public void init() {
-
 
         new Handler().postDelayed(new Runnable() {
             @Override

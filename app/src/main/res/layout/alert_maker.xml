@@ -24,7 +24,7 @@
                 android:textStyle="bold"
                 android:text="Notification"
                 android:textColor="@android:color/white"
-                android:textSize="6pt" />
+                android:textSize="16dp" />
         </carbon.widget.LinearLayout>
     </carbon.widget.RelativeLayout>
 </merge>

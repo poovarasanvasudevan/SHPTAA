@@ -7,6 +7,16 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission android:protectionLevel="signature"
+        android:name="in.shpt.permission.C2D_MESSAGE" />
+    <uses-permission android:name="in.shpt.permission.C2D_MESSAGE" />
+
+
     <application
         android:name=".application.SHPT_"
         android:allowBackup="true"
@@ -16,6 +26,9 @@
         android:theme="@style/AppTheme">
 
 
+
+        <meta-data android:name="com.parse.push.gcm_sender_id"
+            android:value="id:587041438217" />;
         <!-- Activities -->
         <activity android:name=".MainActivity_">
             <intent-filter>
@@ -43,6 +56,28 @@
         <activity android:name=".activity.FullProductActivity_" />
         <activity android:name=".activity.FullScreenImageViewer_" />
         <activity android:name=".activity.BookActivity_"></activity>
+
+        <service android:name="com.parse.PushService" />
+        <receiver android:name="com.parse.ParsePushBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <!--
+                  IMPORTANT: Change "com.codepath.parseportpush" to match your app's package name.
+                -->
+                <category android:name="in.shpt" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

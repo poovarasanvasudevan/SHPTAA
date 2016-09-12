@@ -157,9 +157,11 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void done(ParseConfig config, ParseException e) {
 
-                String coupon_discount = config.getString(Config.DISCOUNT_MESSAGE, null);
-                if (coupon_discount != null) {
-                    alertMaker.makeAlert(coupon_discount, AlertMakerEnum.FAILURE, true);
+                if (config != null) {
+                    String coupon_discount = config.getString(Config.DISCOUNT_MESSAGE, null);
+                    if (coupon_discount != null) {
+                        alertMaker.makeAlert(coupon_discount, AlertMakerEnum.FAILURE, true);
+                    }
                 }
 
             }

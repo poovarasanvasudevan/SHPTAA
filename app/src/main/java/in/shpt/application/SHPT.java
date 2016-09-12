@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mikepenz.iconics.Iconics;
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 
 import org.androidannotations.annotations.EApplication;
 import org.androidannotations.annotations.SystemService;
@@ -49,10 +50,12 @@ public class SHPT extends Application {
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("SHPTAPP")
                 .enableLocalDataStore()
-                .clientKey("SHPTKEY")
+                .clientKey("masterkey")
                 .server("http://10.0.2.2:1337/parse/")
                 .build()
         );
+
+        ParseInstallation.getCurrentInstallation().saveInBackground();
 
 
 
