@@ -69,7 +69,7 @@
                         android:layout_weight="1"
                         android:background="#3b5998"
                         android:backgroundTint="#3b5998"
-                        android:text="Facebook"
+                        android:text="@string/facebook"
                         app:carbon_cornerRadius="3dp"
                         app:carbon_rippleColor="#666" />
 

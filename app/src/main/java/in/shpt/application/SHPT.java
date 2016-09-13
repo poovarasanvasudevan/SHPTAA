@@ -3,16 +3,23 @@ package in.shpt.application;
 import android.app.Application;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.telephony.TelephonyManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mikepenz.iconics.Iconics;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
+import com.parse.ParsePush;
+import com.parse.ParseUser;
+import com.parse.PushService;
+import com.parse.SaveCallback;
 
 import org.androidannotations.annotations.EApplication;
 import org.androidannotations.annotations.SystemService;
 
+import in.shpt.config.Config;
 import in.shpt.networking.APIProvider;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -28,15 +35,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SHPT extends Application {
 
     Retrofit retrofit = null;
-    String BASE_URL = "http://10.0.2.2:8080/";
+    String BASE_URL = "http://192.168.1.104:8080/";
     APIProvider apiService = null;
 
     @SystemService
     ConnectivityManager connectivityManager;
 
+    @SystemService
+    TelephonyManager telephonyManager;
+
     @Override
     public void onCreate() {
-        super.onCreate();
+
 
         Iconics.init(this);
         Ollie.with(this)
@@ -48,18 +58,23 @@ public class SHPT extends Application {
 
 
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("SHPTAPP")
+                .applicationId("herokuApp")
                 .enableLocalDataStore()
-                .clientKey("masterkey")
-                .server("http://10.0.2.2:1337/parse/")
+                .clientKey("herokuApp")
+                .server("https://agile-cliffs-51843.herokuapp.com/parse/")
                 .build()
         );
 
-        ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParsePush.subscribeInBackground("");
 
 
+        ParseInstallation parseInstallation = ParseInstallation.getCurrentInstallation();
+        parseInstallation.saveInBackground();
 
+
+        super.onCreate();
     }
+
 
     public APIProvider getAdapter() {
         if (apiService == null) {
@@ -73,7 +88,7 @@ public class SHPT extends Application {
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                   // .client(client)
+                    // .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
 

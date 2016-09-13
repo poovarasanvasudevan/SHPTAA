@@ -5,11 +5,22 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Toast;
+
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
+import com.parse.ParseException;
+import com.parse.ParsePush;
+import com.parse.ParseUser;
+import com.parse.SendCallback;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.LongClick;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import carbon.widget.CardView;
 import carbon.widget.ImageView;
@@ -75,17 +86,35 @@ public class BookItemView extends LinearLayout {
 
     @LongClick(R.id.bookProductCard)
     public void bookLongClikc(View v) {
-        final CharSequence[] items = {
-                "View Product", "Add to Wishlist", "Add to Cart","Cancel"
-        };
+//        final CharSequence[] items = {
+//                "View Product", "Add to Wishlist", "Add to Cart","Cancel"
+//        };
+//
+//        new AlertDialog.Builder(context)
+//               // .setTitle("Choose Options")
+//                .setItems(items, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int item) {
+//
+//                    }
+//                })
+//                .show();
 
-        new AlertDialog.Builder(context)
-               // .setTitle("Choose Options")
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
+        String channel = "Giants";
+        final Map<String, Object> params = new HashMap<>();
+        params.put("accountId", channel);
+        params.put("message", "Hello Poosqn");
+        params.put("senderName", "poosan");
+        params.put("senderId", ParseUser.getCurrentUser().getObjectId());
+        params.put("useMasterKey", true);//Must have this line
 
-                    }
-                })
-                .show();
+        ParseCloud.callFunctionInBackground("sendPush", params, new FunctionCallback<String>() {
+            public void done(String result, ParseException e) {
+                if (e == null) {
+                    Toast.makeText(getContext(),"ANNOUNCEMENT SUCCESS",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(),"ANNOUNCEMENT FAILURE",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }
