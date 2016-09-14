@@ -5,6 +5,7 @@ import java.util.List;
 import in.shpt.models.language.CommonCategoryFormat;
 import in.shpt.models.products.Product;
 import in.shpt.models.products.book.Books;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -35,4 +36,10 @@ public interface APIProvider {
             @Query("path") String path,
             @Query("webapi") boolean webapi
     );
+
+    @GET("index.php?route=api/product/retriveuser")
+    Call<ResponseBody> getUser(
+            @Query("code") String accessCode
+    );
+
 }

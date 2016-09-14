@@ -29,13 +29,17 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -53,6 +57,7 @@ import in.shpt.core.models.SHPTNavMenu;
 import in.shpt.models.products.Product;
 import in.shpt.networking.ProductWorker;
 import in.shpt.preference.Icons;
+import in.shpt.preference.SHPTPreferences_;
 import in.shpt.shptenum.AlertMakerEnum;
 import in.shpt.ui.AlertMaker;
 import in.shpt.ui.ProductSwipeCard;
@@ -105,6 +110,15 @@ public class HomeActivity extends AppCompatActivity {
     @Bean
     ProductListAdapter productListAdapter;
 
+    @Extra(value = "false")
+    boolean isNewLogin;
+
+    @Extra
+    String accessCode;
+
+    @Pref
+    SHPTPreferences_ shptPreferences_;
+
     @AfterViews
     public void init() {
 
@@ -125,6 +139,10 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        if (isNewLogin == true) {
+            new NewLoginLoader().execute();
+        }
 
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
@@ -168,7 +186,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        ParseObject gameScore = new ParseObject("GameScore");
+        ParseObject gameScore = new ParseObject("Comments");
         gameScore.put("score", 1337);
         gameScore.put("playerName", "Sean Plott");
         gameScore.put("cheatMode", false);
@@ -176,6 +194,30 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    class NewLoginLoader extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                JSONObject prod = productWorker.getUser(shptPreferences_.accessCode().get());
+                setUser(prod);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public void setUser(JSONObject object) {
+        ParseObject user = new ParseObject("User");
+        user.put("email", object.optString("email"));
+        user.put("first_name", object.optString("first_name"));
+        user.put("last_name", object.optString("last_name"));
+        user.put("telephone", object.optString("telephone"));
+        user.pinInBackground();
+    }
 
     class MenuLoader extends AsyncTask<Void, Void, List<SHPTNavMenu>> {
         @Override

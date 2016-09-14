@@ -1,10 +1,13 @@
 package in.shpt.networking;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,5 +99,11 @@ public class ProductWorker {
         myMap.put("language", lang);
         myMap.put("author", author);
         return myMap;
+    }
+
+    public JSONObject getUser(String accessCode) throws IOException, JSONException {
+        String response = shpt.getAdapter().getUser(accessCode).execute().body().string();
+        Log.i("Response123",response);
+        return new JSONObject(response);
     }
 }

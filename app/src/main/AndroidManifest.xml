@@ -15,7 +15,6 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="in.shpt.permission.C2D_MESSAGE" />
 
-
     <application
         android:name=".application.SHPT_"
         android:allowBackup="true"
@@ -23,12 +22,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
         <meta-data
             android:name="com.parse.push.gcm_sender_id"
-            android:value="id:749246961236" />;
-
+            android:value="id:749246961236" />
+        ;
         <meta-data
             android:name="com.parse.push.notification_icon"
             android:resource="@drawable/arrow_up" />
@@ -44,8 +41,11 @@
         <activity
             android:name=".activity.HomeActivity_"
             android:windowSoftInputMode="stateHidden" />
-
         <activity android:name=".activity.BookActivity_" />
+        <activity android:name=".activity.FullProductActivity_" />
+        <activity android:name=".activity.FullScreenImageViewer_" />
+
+        <receiver android:name=".receivers.SocketReceiver_" />
 
         <service android:name="com.parse.PushService" />
 
@@ -74,6 +74,8 @@
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".activity.LoginWebView_"></activity>
     </application>
 
 </manifest>

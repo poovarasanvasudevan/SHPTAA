@@ -9,18 +9,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mikepenz.iconics.Iconics;
 import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
-import com.parse.ParseUser;
-import com.parse.PushService;
-import com.parse.SaveCallback;
 
 import org.androidannotations.annotations.EApplication;
 import org.androidannotations.annotations.SystemService;
 
 import in.shpt.config.Config;
 import in.shpt.networking.APIProvider;
+import khirr.parselivequery.LiveQueryClient;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import ollie.Ollie;
@@ -35,7 +32,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SHPT extends Application {
 
     Retrofit retrofit = null;
-    String BASE_URL = "http://192.168.1.104:8080/";
     APIProvider apiService = null;
 
     @SystemService
@@ -56,14 +52,17 @@ public class SHPT extends Application {
                 .setCacheSize(128)
                 .init();
 
+        Parse.enableLocalDatastore(this);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("herokuApp")
                 .enableLocalDataStore()
+                .applicationId("herokuApp")
                 .clientKey("herokuApp")
                 .server("https://agile-cliffs-51843.herokuapp.com/parse/")
                 .build()
         );
+
+        LiveQueryClient.init("ws://10.0.2.2:4040/", "herokuApp");
 
         ParsePush.subscribeInBackground("");
 
@@ -87,7 +86,7 @@ public class SHPT extends Application {
 
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(Config.BASE_URL)
                     // .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();

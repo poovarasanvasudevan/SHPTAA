@@ -1,12 +1,17 @@
 package in.shpt;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
+import in.shpt.activity.HomeActivity_;
 import in.shpt.activity.LoginActivity_;
 
 
@@ -16,12 +21,24 @@ public class MainActivity extends AppCompatActivity {
     @AfterViews
     public void init() {
 
-        new Handler().postDelayed(new Runnable() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("User").whereExists("email");
+        query.fromLocalDatastore();
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
-            public void run() {
-                LoginActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start().withAnimation(android.R.anim.fade_in, android.R.anim.fade_out);
-                finish();
+            public void done(ParseObject object, ParseException e) {
+                if (e != null) {
+                    if (object != null) {
+                        HomeActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).isNewLogin(false).start();
+                        finish();
+                    } else {
+                        LoginActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start().withAnimation(android.R.anim.fade_in, android.R.anim.fade_out);
+                        finish();
+                    }
+                } else {
+                    LoginActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start().withAnimation(android.R.anim.fade_in, android.R.anim.fade_out);
+                    finish();
+                }
             }
-        }, 2000);
+        });
     }
 }

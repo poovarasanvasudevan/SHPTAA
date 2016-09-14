@@ -5,10 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -39,25 +35,9 @@ public class LoginActivity extends AppCompatActivity {
     @Click(R.id.loginBtn)
     public void loginBtnClicked(View v) {
 
-        if(ParseUser.getCurrentUser() == null) {
-            ParseUser.logInInBackground("poosan", "poosan", new LogInCallback() {
-                public void done(ParseUser user, ParseException e) {
-                    if (user != null) {
+        LoginWebView_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
+        finish();
 
-
-                        HomeActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
-                        finish();
-                    } else {
-                        // Signup failed. Look at the ParseException to see what happened.
-                    }
-                }
-            });
-        } else {
-
-            HomeActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
-            finish();
-
-        }
 
     }
 }

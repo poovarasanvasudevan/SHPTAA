@@ -9,4 +9,5 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
 public interface SHPTPreferences {
 
     boolean isInternetAvailable();
+    String accessCode();
 }
