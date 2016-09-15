@@ -2,7 +2,6 @@ package in.shpt.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -20,14 +19,10 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 
 import in.shpt.R;
 import in.shpt.config.Config;
-import in.shpt.networking.ProductWorker;
+import in.shpt.networking.UserWorker;
 import in.shpt.preference.SHPTPreferences_;
 
 @EActivity(R.layout.activity_login_web_view)
@@ -44,7 +39,7 @@ public class LoginWebView extends AppCompatActivity {
     String email = "";
 
     @Bean
-    ProductWorker productWorker;
+    UserWorker productWorker;
 
     @Pref
     SHPTPreferences_ shptPreferences_;
@@ -124,56 +119,4 @@ public class LoginWebView extends AppCompatActivity {
 
         }
     }
-
-    class GONext extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... voids) {
-
-            try {
-                Log.i("SESSID123", shptPreferences_.accessCode().get());
-                JSONObject obj = new JSONObject(voids[0]);
-                JSONObject prod1 = productWorker.accountInfo();
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return voids[0];
-        }
-
-        @Override
-        protected void onPostExecute(String url) {
-
-
-//            if (url != null) {
-//
-//
-//                if (url.contains("address")) {
-//                    //Enter The Address
-//
-//                    Log.i("Done", "Address");
-//                    HomeActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).isNewLogin(true).start();
-//                    finish();
-//                } else if (url.contains("route=account/account")) {
-//                    //Enter The Phone Number
-//                    Log.i("Done", "Account");
-//                    HomeActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).isNewLogin(true).start();
-//                    finish();
-//
-//                } else {
-//                    //goto Home Page
-//                    Log.i("Done", "Other");
-//                    HomeActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).isNewLogin(true).start();
-//                    finish();
-//                }
-//            }
-            super.onPostExecute(url);
-
-
-        }
-    }
-
-
 }

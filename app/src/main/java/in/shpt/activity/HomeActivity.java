@@ -56,6 +56,7 @@ import in.shpt.application.SHPT;
 import in.shpt.config.Config;
 import in.shpt.core.models.SHPTNavMenu;
 import in.shpt.models.products.Product;
+import in.shpt.networking.CartWorker;
 import in.shpt.networking.ProductWorker;
 import in.shpt.preference.Icons;
 import in.shpt.preference.SHPTPreferences_;
@@ -121,6 +122,9 @@ public class HomeActivity extends AppCompatActivity {
     SHPTPreferences_ shptPreferences_;
 
     int cartCount = 0;
+
+    @Bean
+    CartWorker cartWorker;
 
 
     @InjectMenu
@@ -268,7 +272,7 @@ public class HomeActivity extends AppCompatActivity {
                     HashMap<String, List<Product>> productHash = new HashMap<>();
                     productHash.put("latest", productWorker.getLatestProducts(integers[0]));
                     productHash.put("popular", productWorker.getPopularProducts(integers[1]));
-                    cartCount = productWorker.getCartCount();
+                    cartCount = cartWorker.getCartCount();
                     return productHash;
                 } else {
                     return null;
@@ -298,6 +302,10 @@ public class HomeActivity extends AppCompatActivity {
                     popularProductList.setAdapter(productListAdapter);
 
                     if (cartCount > 0) {
+                        ActionItemBadge.update(HomeActivity.this, menu.findItem(R.id.cartMenu), Ionicons.Icon.ion_ios_cart, ActionItemBadge.BadgeStyles.RED, cartCount);
+                    } else {
+                        ActionItemBadge.hide(menu.findItem(R.id.cartMenu));
+                    } if (cartCount > 0) {
                         ActionItemBadge.update(HomeActivity.this, menu.findItem(R.id.cartMenu), Ionicons.Icon.ion_ios_cart, ActionItemBadge.BadgeStyles.RED, cartCount);
                     } else {
                         ActionItemBadge.hide(menu.findItem(R.id.cartMenu));

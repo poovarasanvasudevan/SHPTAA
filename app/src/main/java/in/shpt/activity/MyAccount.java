@@ -1,6 +1,5 @@
 package in.shpt.activity;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +15,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import in.shpt.R;
-import in.shpt.networking.ProductWorker;
+import in.shpt.networking.UserWorker;
 
 @EActivity(R.layout.activity_my_account)
 public class MyAccount extends AppCompatActivity {
@@ -25,7 +24,7 @@ public class MyAccount extends AppCompatActivity {
     Toolbar toolbar;
 
     @Bean
-    ProductWorker productWorker;
+    UserWorker productWorker;
 
     @AfterViews
     public void init() {
@@ -65,14 +64,13 @@ public class MyAccount extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        HomeActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).isNewLogin(true).start();
+
         finish();
         super.onBackPressed();
     }
 
     @OptionsItem(android.R.id.home)
     public void homeClicked() {
-        HomeActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).isNewLogin(true).start();
         finish();
     }
 }

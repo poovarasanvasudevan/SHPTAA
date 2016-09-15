@@ -6,10 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.jayfang.dropdownmenu.DropDownMenu;
 import com.jayfang.dropdownmenu.OnMenuSelectedListener;
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
+import com.mikepenz.ionicons_typeface_library.Ionicons;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
@@ -17,7 +20,10 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +38,7 @@ import in.shpt.models.common.Categories;
 import in.shpt.models.products.book.Books;
 import in.shpt.models.products.book.Category;
 import in.shpt.models.products.book.Sort;
+import in.shpt.networking.CartWorker;
 import in.shpt.networking.ProductWorker;
 import in.shpt.preference.Icons;
 import in.shpt.shptenum.AlertMakerEnum;
@@ -40,6 +47,7 @@ import in.shpt.widget.EndlessScroll;
 
 
 @EActivity(R.layout.activity_book)
+@OptionsMenu(R.menu.book_menu)
 public class BookActivity extends AppCompatActivity {
 
     @Bean
@@ -89,6 +97,14 @@ public class BookActivity extends AppCompatActivity {
     List<Categories> auth;
     int scrollDY = 0;
 
+    @OptionsMenuItem(R.id.cart)
+    MenuItem cart;
+
+    @Bean
+    CartWorker cartWorker;
+
+    int cartCount = 0;
+
     @AfterViews
     public void init() {
         setSupportActionBar(toolbar);
@@ -99,9 +115,13 @@ public class BookActivity extends AppCompatActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         bookLoader.setLayoutManager(llm);
 
+        new CartLoader().execute();
 
         //languageMenu.setImageDrawable(icons.getIcon(Ionicons.Icon.ion_ios_paper, 24, Color.BLACK));
         new AsyncBookLoader().execute("1", "1", sortingType, orderType);
+
+
+
 
 
         languageMenu.setmShowCount(6);
@@ -164,9 +184,6 @@ public class BookActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
 
     RecyclerView.OnScrollListener listener = new RecyclerView.OnScrollListener() {
@@ -178,7 +195,7 @@ public class BookActivity extends AppCompatActivity {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             scrollDY += dy;
-            if(scrollDY > 1500){
+            if (scrollDY > 1500) {
                 fabIcon.setVisibility(View.VISIBLE);
             } else {
                 fabIcon.setVisibility(View.GONE);
@@ -193,6 +210,40 @@ public class BookActivity extends AppCompatActivity {
         v.setVisibility(View.GONE);
     }
 
+    @OptionsMenuItem(R.id.cart)
+    void injectCartMenu(MenuItem cartItem) {
+        cartItem.setIcon(icons.getIcon(Ionicons.Icon.ion_ios_cart));
+
+    }
+
+    class CartLoader extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            try {
+                return cartWorker.getCartCount();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+
+            cartCount = integer;
+            if (integer != null) {
+                if (cartCount > 0) {
+                    ActionItemBadge.update(BookActivity.this, cart, Ionicons.Icon.ion_ios_cart, ActionItemBadge.BadgeStyles.RED, cartCount);
+                } else {
+                    ActionItemBadge.hide(cart);
+                }
+            }
+            super.onPostExecute(integer);
+        }
+    }
 
     class AsyncBookLoader extends AsyncTask<String, Void, Books> {
 
@@ -216,6 +267,7 @@ public class BookActivity extends AppCompatActivity {
 
 
                 if (shpt.isInternetAvailable()) {
+
                     return productWorker.getDefaultBookList(strings[0], strings[1], strings[2], strings[3]);
                 } else {
                     return null;
