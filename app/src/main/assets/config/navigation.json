@@ -39,7 +39,7 @@
     "child": [
       {
         "name": "My Accounts",
-        "action": "in.shpt.activity.HomeActivity_",
+        "action": "in.shpt.activity.MyAccount_",
         "icon": "ion_ios_home"
       },
       {

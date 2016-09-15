@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.ionicons_typeface_library.Ionicons;
 import com.parse.ConfigCallback;
 import com.parse.ParseConfig;
@@ -30,6 +31,7 @@ import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.InjectMenu;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
@@ -39,7 +41,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -119,6 +120,12 @@ public class HomeActivity extends AppCompatActivity {
     @Pref
     SHPTPreferences_ shptPreferences_;
 
+    int cartCount = 0;
+
+
+    @InjectMenu
+    Menu menu;
+
     @AfterViews
     public void init() {
 
@@ -139,11 +146,6 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        if (isNewLogin == true) {
-            new NewLoginLoader().execute();
-        }
-
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
@@ -192,31 +194,8 @@ public class HomeActivity extends AppCompatActivity {
         gameScore.put("cheatMode", false);
         gameScore.saveInBackground();
 
-    }
 
-    class NewLoginLoader extends AsyncTask<Void, Void, Void> {
 
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                JSONObject prod = productWorker.getUser(shptPreferences_.accessCode().get());
-                setUser(prod);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
-
-    public void setUser(JSONObject object) {
-        ParseObject user = new ParseObject("User");
-        user.put("email", object.optString("email"));
-        user.put("first_name", object.optString("first_name"));
-        user.put("last_name", object.optString("last_name"));
-        user.put("telephone", object.optString("telephone"));
-        user.pinInBackground();
     }
 
     class MenuLoader extends AsyncTask<Void, Void, List<SHPTNavMenu>> {
@@ -289,11 +268,14 @@ public class HomeActivity extends AppCompatActivity {
                     HashMap<String, List<Product>> productHash = new HashMap<>();
                     productHash.put("latest", productWorker.getLatestProducts(integers[0]));
                     productHash.put("popular", productWorker.getPopularProducts(integers[1]));
+                    cartCount = productWorker.getCartCount();
                     return productHash;
                 } else {
                     return null;
                 }
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             return null;
@@ -314,6 +296,12 @@ public class HomeActivity extends AppCompatActivity {
                     popularProductList.setLayoutManager(llm);
                     productListAdapter.addData(products.get("popular"));
                     popularProductList.setAdapter(productListAdapter);
+
+                    if (cartCount > 0) {
+                        ActionItemBadge.update(HomeActivity.this, menu.findItem(R.id.cartMenu), Ionicons.Icon.ion_ios_cart, ActionItemBadge.BadgeStyles.RED, cartCount);
+                    } else {
+                        ActionItemBadge.hide(menu.findItem(R.id.cartMenu));
+                    }
                 }
 
 
@@ -377,6 +365,7 @@ public class HomeActivity extends AppCompatActivity {
     @OptionsMenuItem(R.id.cartMenu)
     void injectCartMenu(MenuItem cartItem) {
         cartItem.setIcon(icons.getIcon(Ionicons.Icon.ion_ios_cart));
+
     }
 
     @OptionsMenuItem(R.id.notificationMenu)

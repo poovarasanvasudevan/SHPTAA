@@ -1,6 +1,7 @@
 package in.shpt.application;
 
 import android.app.Application;
+import android.content.ContextWrapper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
@@ -11,14 +12,21 @@ import com.mikepenz.iconics.Iconics;
 import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import org.androidannotations.annotations.EApplication;
 import org.androidannotations.annotations.SystemService;
+import org.androidannotations.annotations.sharedpreferences.Pref;
+
+import java.io.IOException;
 
 import in.shpt.config.Config;
 import in.shpt.networking.APIProvider;
-import khirr.parselivequery.LiveQueryClient;
+import in.shpt.preference.SHPTPreferences_;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import ollie.Ollie;
 import retrofit2.Retrofit;
@@ -39,6 +47,10 @@ public class SHPT extends Application {
 
     @SystemService
     TelephonyManager telephonyManager;
+
+
+    @Pref
+    SHPTPreferences_ shptPreferences_;
 
     @Override
     public void onCreate() {
@@ -62,7 +74,6 @@ public class SHPT extends Application {
                 .build()
         );
 
-        LiveQueryClient.init("ws://10.0.2.2:4040/", "herokuApp");
 
         ParsePush.subscribeInBackground("");
 
@@ -71,23 +82,34 @@ public class SHPT extends Application {
         parseInstallation.saveInBackground();
 
 
+        new Prefs.Builder()
+                .setContext(this)
+                .setMode(ContextWrapper.MODE_PRIVATE)
+                .setPrefsName(getPackageName())
+                .setUseDefaultSharedPreference(true)
+                .build();
         super.onCreate();
     }
 
 
     public APIProvider getAdapter() {
-        if (apiService == null) {
+
+        apiService = null;
+        if (Prefs.getString(Config.COOKIE, null) != null) {
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                     .create();
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .addInterceptor(interceptor)
+                    .addInterceptor(new AddCookiesInterceptor())
+                    .build();
 
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(Config.BASE_URL)
-                    // .client(client)
+                    .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
 
@@ -95,7 +117,38 @@ public class SHPT extends Application {
 
             return apiService;
         } else {
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                    .create();
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .addInterceptor(interceptor)
+                    .build();
+
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Config.BASE_URL)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            apiService = retrofit.create(APIProvider.class);
+
             return apiService;
+        }
+
+    }
+
+    public class AddCookiesInterceptor implements Interceptor {
+
+        @Override
+        public Response intercept(Interceptor.Chain chain) throws IOException {
+            Request.Builder builder = chain.request().newBuilder();
+
+            builder.addHeader("Cookie", "PHPSESSID=" + Prefs.getString(Config.COOKIE, null) + "; display=list");
+            builder.addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36 OPR/39.0.2256.71");
+            return chain.proceed(builder.build());
         }
     }
 

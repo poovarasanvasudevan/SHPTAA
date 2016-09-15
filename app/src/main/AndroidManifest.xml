@@ -20,12 +20,14 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:allowClearUserData="false"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.parse.push.gcm_sender_id"
             android:value="id:749246961236" />
-        ;
+
         <meta-data
             android:name="com.parse.push.notification_icon"
             android:resource="@drawable/arrow_up" />
@@ -75,7 +77,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.LoginWebView_"></activity>
+        <activity android:name=".activity.LoginWebView_" />
+        <activity android:name=".activity.MyAccount_" android:windowSoftInputMode="adjustResize|stateAlwaysHidden" ></activity>
     </application>
 
 </manifest>

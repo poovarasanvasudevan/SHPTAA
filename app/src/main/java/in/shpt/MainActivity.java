@@ -11,8 +11,7 @@ import com.parse.ParseQuery;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
-import in.shpt.activity.HomeActivity_;
-import in.shpt.activity.LoginActivity_;
+import in.shpt.activity.LoginWebView_;
 
 
 @EActivity(R.layout.activity_main)
@@ -26,18 +25,9 @@ public class MainActivity extends AppCompatActivity {
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
-                if (e != null) {
-                    if (object != null) {
-                        HomeActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).isNewLogin(false).start();
-                        finish();
-                    } else {
-                        LoginActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start().withAnimation(android.R.anim.fade_in, android.R.anim.fade_out);
-                        finish();
-                    }
-                } else {
-                    LoginActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start().withAnimation(android.R.anim.fade_in, android.R.anim.fade_out);
-                    finish();
-                }
+
+                LoginWebView_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start().withAnimation(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
             }
         });
     }

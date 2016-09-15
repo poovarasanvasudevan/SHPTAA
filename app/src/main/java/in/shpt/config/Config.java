@@ -12,4 +12,5 @@ public class Config {
     public static String LOGIN_BASE_URL = "http://localhost:8080/";
     public static String LOGIN_URL = BASE_URL + "?route=account/login";
     public static String ENV = "test";
+    public static String COOKIE = "cookie";
 }

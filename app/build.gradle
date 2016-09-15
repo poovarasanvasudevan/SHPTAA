@@ -59,7 +59,8 @@ dependencies {
     provided 'com.michaelpardo:ollie-compiler:0.3.1'
 
     compile 'com.parse:parse-android:1.13.1'
-    compile 'com.github.khirr:ParseLiveQuery:3114e30d43'
+    compile 'com.pixplicity.easyprefs:library:1.8.1@aar'
+    compile 'com.mikepenz:actionitembadge:3.3.0@aar'
 }
 apt {
     arguments {

@@ -37,9 +37,20 @@ public interface APIProvider {
             @Query("webapi") boolean webapi
     );
 
-    @GET("index.php?route=api/product/retriveuser")
-    Call<ResponseBody> getUser(
-            @Query("code") String accessCode
-    );
+    @GET("index.php?route=api/product/usersession")
+    Call<ResponseBody> getUserSession();
+
+    @GET("index.php?route=api/product/user")
+    Call<ResponseBody> getUserDetails();
+
+    @GET("index.php?route=api/product/loginme")
+    Call<ResponseBody> loginMe(@Query("email") String email);
+
+    @GET("index.php?route=account/edit")
+    Call<ResponseBody> accountInfo(@Query("webapi") boolean webapi);
+
+    @GET("index.php?route=api/product/mycartcount")
+    Call<ResponseBody> cartCount();
+
 
 }

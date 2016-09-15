@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<carbon.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my_account"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="in.shpt.activity.MyAccount">
+
+    <carbon.beta.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:elevation="4dp"
+        app:carbon_elevation="4dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    </carbon.beta.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomTextCard"
+        android:layout_below="@+id/appbar">
+
+
+        <carbon.widget.RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <carbon.widget.LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <carbon.widget.LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <carbon.widget.TextView
+                        android:id="@+id/myaccount_firstname_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="First Name"
+                        android:textColor="@color/carbon_black"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/myaccount_firstname_val"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/square_hollow_bg_gray"
+                        android:enabled="false"
+                        android:paddingLeft="5dp" />
+
+                </carbon.widget.LinearLayout>
+
+
+                <carbon.widget.LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <carbon.widget.TextView
+                        android:id="@+id/myaccount_lastname_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Last Name"
+                        android:textColor="@color/carbon_black"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/myaccount_lastname_val"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/square_hollow_bg_gray"
+                        android:enabled="false"
+                        android:paddingLeft="5dp" />
+
+                </carbon.widget.LinearLayout>
+
+
+                <carbon.widget.LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <carbon.widget.TextView
+                        android:id="@+id/myaccount_email_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textColor="@color/carbon_black"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/myaccount_email_val"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/square_hollow_bg_gray"
+                        android:enabled="false"
+                        android:paddingLeft="5dp" />
+
+                </carbon.widget.LinearLayout>
+
+
+                <carbon.widget.LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <carbon.widget.TextView
+                        android:id="@+id/myaccount_telephone_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Telephone"
+                        android:textColor="@color/carbon_black"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/myaccount_telephone_val"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/square_hollow_bg_gray"
+                        android:inputType="phone"
+                        android:paddingLeft="5dp" />
+
+                </carbon.widget.LinearLayout>
+
+
+                <carbon.widget.LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <carbon.widget.TextView
+                        android:id="@+id/myaccount_fax_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fax"
+                        android:textColor="@color/carbon_black"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/myaccount_fax_val"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/square_hollow_bg_gray"
+                        android:inputType="phone"
+                        android:paddingLeft="5dp" />
+
+                </carbon.widget.LinearLayout>
+
+            </carbon.widget.LinearLayout>
+        </carbon.widget.RelativeLayout>
+    </ScrollView>
+    <carbon.widget.CardView
+        android:layout_width="match_parent"
+        android:id="@+id/bottomTextCard"
+        app:cardElevation="4dp"
+        android:layout_alignParentBottom="true"
+        android:layout_height="60dp">
+
+        <carbon.widget.RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="match_parent">
+
+
+            <carbon.widget.Button
+                android:id="@+id/save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/md_green_500"
+                android:backgroundTint="@color/md_green_500"
+                android:text="Continue"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                app:carbon_cornerRadius="3dp"
+                app:carbon_rippleColor="#666" />
+
+        </carbon.widget.RelativeLayout>
+    </carbon.widget.CardView>
+</carbon.widget.RelativeLayout>
