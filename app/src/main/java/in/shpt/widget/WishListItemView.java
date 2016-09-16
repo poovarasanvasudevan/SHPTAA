@@ -33,23 +33,23 @@ import in.shpt.preference.Icons;
 /**
  * Created by poovarasanv on 24/8/16.
  */
-@EViewGroup(R.layout.book_list)
-public class BookItemView extends LinearLayout {
+@EViewGroup(R.layout.wish_list)
+public class WishListItemView extends LinearLayout {
 
     Context context;
 
 
     @ViewById
-    TextView bookProductCost;
+    TextView wbookProductCost;
 
     @ViewById
-    TextView bookProductName;
+    TextView wbookProductName;
 
     @ViewById
-    ImageView bookProductImage;
+    ImageView wbookProductImage;
 
     @ViewById
-    CardView bookProductCard;
+    CardView wbookProductCard;
 
     @Bean
     Icons icons;
@@ -63,40 +63,36 @@ public class BookItemView extends LinearLayout {
     @ViewById
     TextView freeShippingLabel;
 
-    in.shpt.models.products.book.Product product = null;
+    JSONObject product;
 
-    public BookItemView(Context context) {
+    public WishListItemView(Context context) {
         super(context);
         this.context = context;
     }
 
-    public BookItemView(Context context, AttributeSet attrs) {
+    public WishListItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
     }
 
-    public BookItemView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public WishListItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
     }
 
-    public void bind(in.shpt.models.products.book.Product product) {
+    public void bind(JSONObject product) {
 
 
-        bookProductName.setText(Html.fromHtml(product.getName()));
-        bookProductCost.setText(product.getPrice());
-        icons.displayImage(product.getThumb(), bookProductImage);
-        if (product.getFreeShippingDate() != null) {
-
-            freeShippingLabel.setVisibility(VISIBLE);
-        }
+        wbookProductName.setText(Html.fromHtml(product.optString("name")));
+        wbookProductCost.setText(product.optString("price"));
+        icons.displayImage(product.optString("thumb"), wbookProductImage);
         this.product = product;
     }
 
-    @LongClick(R.id.bookProductCard)
+    @LongClick(R.id.wbookProductCard)
     public void bookLongClikc(View v) {
         final CharSequence[] items = {
-                "View Product", "Add to Wishlist", "Add to Cart", "Cancel"
+                "View Product", "Add to Cart", "Remove from Wishlist", "Cancel"
         };
 
         new AlertDialog.Builder(context)
@@ -109,11 +105,11 @@ public class BookItemView extends LinearLayout {
                             }
                             break;
                             case 1: {
-                                new AddToWishListTask().execute();
+                                new AddToCartTask().execute();
                             }
                             break;
                             case 2: {
-                                new AddToCartTask().execute();
+                                new RemoveWishList().execute();
                             }
                             break;
                             case 3: {
@@ -131,7 +127,8 @@ public class BookItemView extends LinearLayout {
         @Override
         protected JSONObject doInBackground(String... voids) {
             try {
-                return cartWorker.addToCart(product.getProductId(), 1);
+                Log.i("Cart Total", "Rnning");
+                return cartWorker.addToCart(product.optString("product_id"), 1);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
@@ -142,6 +139,8 @@ public class BookItemView extends LinearLayout {
 
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
+            Log.i("Cart Total", jsonObject.optString("total"));
+
             if (jsonObject != null) {
 
                 Log.i("Cart Total", jsonObject.optString("total"));
@@ -154,29 +153,28 @@ public class BookItemView extends LinearLayout {
         }
     }
 
-    class AddToWishListTask extends AsyncTask<String, Void, JSONObject> {
+    class RemoveWishList extends AsyncTask<Void, Void, JSONObject> {
         @Override
-        protected JSONObject doInBackground(String... voids) {
+        protected JSONObject doInBackground(Void... voids) {
+
             try {
-                return wishListWorker.addToWishList(product.getProductId());
+                return wishListWorker.removeWishList(product.optString("product_id"));
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
             return null;
         }
 
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
-            if (jsonObject != null) {
 
-                Log.i("Wish Total", jsonObject.optString("total"));
-                EventBus.getDefault().post(new WishListEvent(
-                        Html.fromHtml(jsonObject.optString("success")).toString(),
-                        jsonObject.optString("total").replace("(", "").replace(")", "")
-                ));
-            }
+            EventBus.getDefault().post(new WishListEvent(
+                    "refresh",
+                    "0"
+            ));
             super.onPostExecute(jsonObject);
         }
     }

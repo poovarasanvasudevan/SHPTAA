@@ -403,4 +403,41 @@ public class HomeActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
+
+
+    class CartLoader extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            try {
+                return cartWorker.getCartCount();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+
+            cartCount = integer;
+            if (integer != null) {
+                if (cartCount > 0) {
+                    ActionItemBadge.update(HomeActivity.this,  menu.findItem(R.id.cartMenu), Ionicons.Icon.ion_ios_cart, ActionItemBadge.BadgeStyles.RED, cartCount);
+                } else {
+                    ActionItemBadge.hide( menu.findItem(R.id.cartMenu));
+                }
+            }
+            super.onPostExecute(integer);
+        }
+    }
+
+
+    @Override
+    protected void onPostResume() {
+        new CartLoader().execute();
+        super.onPostResume();
+    }
 }

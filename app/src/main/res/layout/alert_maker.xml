@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:id="@+id/fullLayout"
         android:background="@color/md_green_500"
-        android:layout_height="30dp">
+        android:layout_height="wrap_content">
 
         <carbon.widget.LinearLayout
             android:layout_centerHorizontal="true"

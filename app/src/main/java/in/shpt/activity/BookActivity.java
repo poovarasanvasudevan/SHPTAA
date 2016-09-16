@@ -23,6 +23,9 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -34,6 +37,8 @@ import carbon.widget.ProgressBar;
 import in.shpt.R;
 import in.shpt.adapter.BookListAdapter;
 import in.shpt.application.SHPT;
+import in.shpt.event.CartEvent;
+import in.shpt.event.WishListEvent;
 import in.shpt.models.common.Categories;
 import in.shpt.models.products.book.Books;
 import in.shpt.models.products.book.Category;
@@ -119,9 +124,6 @@ public class BookActivity extends AppCompatActivity {
 
         //languageMenu.setImageDrawable(icons.getIcon(Ionicons.Icon.ion_ios_paper, 24, Color.BLACK));
         new AsyncBookLoader().execute("1", "1", sortingType, orderType);
-
-
-
 
 
         languageMenu.setmShowCount(6);
@@ -384,11 +386,36 @@ public class BookActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         page = "1";
         PATH = "1";
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(CartEvent event) {
+        alertMaker.makeAlert(event.getMessage(), AlertMakerEnum.SUCCESS);
+        ActionItemBadge.update(BookActivity.this, cart, Ionicons.Icon.ion_ios_cart, ActionItemBadge.BadgeStyles.RED, Integer.parseInt(event.getCount()));
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(WishListEvent event) {
+        alertMaker.makeAlert(event.getMessage(), AlertMakerEnum.SUCCESS);
+    }
+
 
     @Override
     protected void onPause() {

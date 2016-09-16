@@ -8,6 +8,7 @@ import in.shpt.models.products.book.Books;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -55,10 +56,24 @@ public interface APIProvider {
     Call<ResponseBody> cartCount();
 
 
+    @FormUrlEncoded
     @POST("index.php?route=checkout/cart/add")
     Call<ResponseBody> addToCart(
             @Field("product_id") String product_id,
             @Field("quantity") int quantity
     );
+
+
+    @FormUrlEncoded
+    @POST("index.php?route=account/wishlist/add")
+    Call<ResponseBody> addToWishList(
+            @Field("product_id") String product_id
+    );
+
+    @GET("index.php?route=account/wishlist")
+    Call<ResponseBody> getWishList(@Query("webapi") boolean webapi);
+
+    @GET("index.php?route=account/wishlist")
+    Call<ResponseBody> removeWishList(@Query("remove") String product_id);
 
 }

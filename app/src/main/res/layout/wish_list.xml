@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <carbon.widget.CardView
+        android:id="@+id/wbookProductCard"
+        android:layout_width="match_parent"
+        android:layout_height="91dp"
+        android:clickable="true"
+        app:carbon_cornerRadius="0dp"
+        app:carbon_rippleColor="#ccc"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <carbon.widget.LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <carbon.widget.ImageView
+                    android:id="@+id/wbookProductImage"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp" />
+
+                <carbon.widget.LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:orientation="vertical">
+
+
+                    <carbon.widget.TextView
+                        android:id="@+id/wbookProductName"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Product Name"
+                        android:textSize="16dp" />
+
+
+                    <carbon.widget.TextView
+                        android:id="@+id/wbookProductCost"
+                        style="@style/Base.TextAppearance.AppCompat.Body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="#200"
+                        android:textColor="@color/carbon_green_700"
+                        android:textStyle="bold" />
+
+
+                </carbon.widget.LinearLayout>
+            </carbon.widget.LinearLayout>
+
+            <carbon.widget.Divider
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+        </LinearLayout>
+    </carbon.widget.CardView>
+
+</merge>

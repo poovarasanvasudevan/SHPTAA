@@ -49,7 +49,7 @@
       },
       {
         "name": "Wish List",
-        "action": "in.shpt.activity.HomeActivity_",
+        "action": "in.shpt.activity.WishListActivity_",
         "icon": "ion_star"
       },
       {
