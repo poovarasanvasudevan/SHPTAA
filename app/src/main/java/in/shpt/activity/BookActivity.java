@@ -1,5 +1,6 @@
 package in.shpt.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -414,6 +415,11 @@ public class BookActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(WishListEvent event) {
         alertMaker.makeAlert(event.getMessage(), AlertMakerEnum.SUCCESS);
+    }
+
+    @OptionsItem(R.id.cart)
+    void gocart() {
+        ShoppingCartActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start().withAnimation(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
 

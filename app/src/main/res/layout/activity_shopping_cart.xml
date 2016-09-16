@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<in.shpt.ui.SHPTLayout_ xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_shopping_cart"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="in.shpt.activity.ShoppingCartActivity">
+
+    <carbon.beta.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:elevation="4dp"
+        app:carbon_elevation="4dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    </carbon.beta.AppBarLayout>
+
+    <carbon.widget.RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appbar">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/orderListLoader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottomCard" />
+
+        <carbon.widget.CardView
+            android:id="@+id/bottomCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <carbon.widget.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@color/md_green_400"
+                android:backgroundTint="@color/md_green_400"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:tag="enable"
+                android:text="Checkout"
+                app:carbon_rippleColor="@color/md_green_900" />
+        </carbon.widget.CardView>
+    </carbon.widget.RelativeLayout>
+
+</in.shpt.ui.SHPTLayout_>

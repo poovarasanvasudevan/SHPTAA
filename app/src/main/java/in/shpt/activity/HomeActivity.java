@@ -199,7 +199,6 @@ public class HomeActivity extends AppCompatActivity {
         gameScore.saveInBackground();
 
 
-
     }
 
     class MenuLoader extends AsyncTask<Void, Void, List<SHPTNavMenu>> {
@@ -305,7 +304,8 @@ public class HomeActivity extends AppCompatActivity {
                         ActionItemBadge.update(HomeActivity.this, menu.findItem(R.id.cartMenu), Ionicons.Icon.ion_ios_cart, ActionItemBadge.BadgeStyles.RED, cartCount);
                     } else {
                         ActionItemBadge.hide(menu.findItem(R.id.cartMenu));
-                    } if (cartCount > 0) {
+                    }
+                    if (cartCount > 0) {
                         ActionItemBadge.update(HomeActivity.this, menu.findItem(R.id.cartMenu), Ionicons.Icon.ion_ios_cart, ActionItemBadge.BadgeStyles.RED, cartCount);
                     } else {
                         ActionItemBadge.hide(menu.findItem(R.id.cartMenu));
@@ -386,6 +386,11 @@ public class HomeActivity extends AppCompatActivity {
         alertMaker.makeAlert("Notification Text", AlertMakerEnum.FAILURE);
     }
 
+    @OptionsItem(R.id.cartMenu)
+    void gocart() {
+        ShoppingCartActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start().withAnimation(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void connectionResult(Boolean result) {
@@ -425,9 +430,9 @@ public class HomeActivity extends AppCompatActivity {
             cartCount = integer;
             if (integer != null) {
                 if (cartCount > 0) {
-                    ActionItemBadge.update(HomeActivity.this,  menu.findItem(R.id.cartMenu), Ionicons.Icon.ion_ios_cart, ActionItemBadge.BadgeStyles.RED, cartCount);
+                    ActionItemBadge.update(HomeActivity.this, menu.findItem(R.id.cartMenu), Ionicons.Icon.ion_ios_cart, ActionItemBadge.BadgeStyles.RED, cartCount);
                 } else {
-                    ActionItemBadge.hide( menu.findItem(R.id.cartMenu));
+                    ActionItemBadge.hide(menu.findItem(R.id.cartMenu));
                 }
             }
             super.onPostExecute(integer);
