@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <carbon.widget.CardView
+        android:id="@+id/cccard"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:padding="5dp"
+        android:clickable="true"
+        app:carbon_rippleColor="#ccc"
+        app:carbon_cornerRadius="0dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <carbon.widget.LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <carbon.widget.ImageView
+                    android:id="@+id/ccImage"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:carbon_widthPercent="20.0%" />
+
+
+                <carbon.widget.TextView
+                    android:id="@+id/ccName"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:carbon_widthPercent="41.0%" />
+
+                <carbon.widget.TextView
+                    android:id="@+id/ccQty"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:layout_width="match_parent"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|center_horizontal"
+                    app:carbon_widthPercent="16.0%" />
+
+                <carbon.widget.TextView
+                    android:id="@+id/ccAmount"
+                    android:textStyle="bold"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|center_horizontal"
+                    app:carbon_widthPercent="23.0%" />
+
+            </carbon.widget.LinearLayout>
+
+            <carbon.widget.Divider
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+        </LinearLayout>
+    </carbon.widget.CardView>
+
+</merge>

@@ -79,4 +79,8 @@ public interface APIProvider {
     @GET("index.php?route=checkout/cart")
     Call<ResponseBody> getShoppingCart(@Query("webapi") boolean webapi);
 
+
+    @GET("index.php?route=checkout/cart")
+    Call<ResponseBody> removeFromCart(@Query("remove") String product);
+
 }

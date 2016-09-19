@@ -42,4 +42,8 @@ public class CartWorker {
         return new JSONObject(response);
     }
 
+    public JSONObject removeFromCart(String product) throws IOException, JSONException {
+        String response = shpt.getAdapter().removeFromCart(product).execute().body().string();
+        return new JSONObject(response);
+    }
 }

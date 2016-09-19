@@ -7,38 +7,104 @@
     android:layout_height="match_parent"
     tools:context="in.shpt.activity.ShoppingCartActivity">
 
-    <carbon.beta.AppBarLayout
-        android:id="@+id/appbar"
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:elevation="4dp"
-        app:carbon_elevation="4dp">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-    </carbon.beta.AppBarLayout>
 
     <carbon.widget.RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appbar">
+        android:layout_below="@+id/toolbar">
+
+        <carbon.widget.CardView
+            android:id="@+id/thCard"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:cardCornerRadius="0dp"
+            app:carbon_cornerRadius="0dp"
+            android:padding="5dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/carbon_orange_400">
+
+            <carbon.widget.LinearLayout
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent">
+
+                <carbon.widget.TextView
+                    android:id="@+id/cImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:carbon_widthPercent="20.0%" />
+
+
+                <carbon.widget.TextView
+                    android:id="@+id/cName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:carbon_widthPercent="41.0%" />
+
+                <carbon.widget.TextView
+                    android:id="@+id/cQty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:carbon_widthPercent="25.0%" />
+
+                <carbon.widget.TextView
+                    android:id="@+id/cAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:carbon_widthPercent="14.0%" />
+            </carbon.widget.LinearLayout>
+
+
+        </carbon.widget.CardView>
 
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/orderListLoader"
             android:layout_width="match_parent"
+            android:background="@color/white"
             android:layout_height="match_parent"
-            android:layout_above="@+id/bottomCard" />
+            android:layout_above="@+id/bottomCard"
+            android:layout_below="@+id/thCard" />
 
         <carbon.widget.CardView
             android:id="@+id/bottomCard"
             android:layout_width="match_parent"
+            app:cardCornerRadius="0dp"
+            app:carbon_cornerRadius="0dp"
+            app:cardElevation="4dp"
+            app:carbon_elevation="4dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
+
+            <carbon.widget.TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/totalText"
+                android:text="Hello"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content" />
 
             <carbon.widget.Button
                 android:layout_width="wrap_content"
@@ -46,10 +112,10 @@
                 android:layout_alignParentRight="true"
                 android:background="@color/md_green_400"
                 android:backgroundTint="@color/md_green_400"
-                android:paddingTop="13dp"
                 android:paddingBottom="13dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
+                android:paddingTop="13dp"
                 android:tag="enable"
                 android:text="Checkout"
                 app:carbon_rippleColor="@color/md_green_900" />
