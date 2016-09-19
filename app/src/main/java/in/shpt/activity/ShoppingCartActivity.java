@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import carbon.widget.RelativeLayout;
 import carbon.widget.TextView;
 import in.shpt.R;
 import in.shpt.adapter.CartAdapter;
@@ -49,6 +51,12 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
     @ViewById
     AlertMaker alertMaker;
+
+    @ViewById
+    RelativeLayout fullView;
+
+    @ViewById
+    TextView empty;
 
     @Override
     protected void onStart() {
@@ -97,30 +105,35 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
                 List<JSONObject> allJson = new ArrayList<>();
 
-                if (jsonObject.optJSONArray("products").length() > 0) {
+                if (jsonObject.optJSONArray("products") != null) {
+                    if (jsonObject.optJSONArray("products").length() > 0) {
 
-                    for (int i = 0; i < jsonObject.optJSONArray("products").length(); i++) {
-                        allJson.add(jsonObject.optJSONArray("products").optJSONObject(i));
-                    }
-
-                    cartAdapter.addData(allJson);
-                    orderListLoader.setAdapter(cartAdapter);
-                } else {
-
-                }
-
-                List<JSONObject> total = new ArrayList<>();
-
-                if (jsonObject.optJSONArray("totals").length() > 0) {
-
-                    for (int i = 0; i < jsonObject.optJSONArray("totals").length(); i++) {
-                        if (jsonObject.optJSONArray("totals").optJSONObject(i).optString("code").equals("total")) {
-                            totalTxt = jsonObject.optJSONArray("totals").optJSONObject(i).optString("title") + " : " + jsonObject.optJSONArray("totals").optJSONObject(i).optString("text");
+                        for (int i = 0; i < jsonObject.optJSONArray("products").length(); i++) {
+                            allJson.add(jsonObject.optJSONArray("products").optJSONObject(i));
                         }
+
+                        cartAdapter.addData(allJson);
+                        orderListLoader.setAdapter(cartAdapter);
+                    } else {
+
                     }
 
-                } else {
+                    List<JSONObject> total = new ArrayList<>();
 
+                    if (jsonObject.optJSONArray("totals").length() > 0) {
+
+                        for (int i = 0; i < jsonObject.optJSONArray("totals").length(); i++) {
+                            if (jsonObject.optJSONArray("totals").optJSONObject(i).optString("code").equals("total")) {
+                                totalTxt = jsonObject.optJSONArray("totals").optJSONObject(i).optString("title") + " : " + jsonObject.optJSONArray("totals").optJSONObject(i).optString("text");
+                            }
+                        }
+
+                    } else {
+
+                    }
+                } else {
+                    fullView.setVisibility(View.GONE);
+                    empty.setText(jsonObject.optString("text_error"));
                 }
 
                 totalText.setText(totalTxt);
@@ -139,6 +152,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         super.onDestroy();
 
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(CartEvent event) {

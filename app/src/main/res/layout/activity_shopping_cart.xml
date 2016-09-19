@@ -16,8 +16,15 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
+    <carbon.widget.TextView
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/empty"
+        android:layout_height="wrap_content" />
     <carbon.widget.RelativeLayout
         android:layout_width="match_parent"
+        android:id="@+id/fullView"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar">
 
@@ -29,7 +36,7 @@
             app:carbon_cornerRadius="0dp"
             android:padding="5dp"
             android:layout_alignParentTop="true"
-            android:background="@color/carbon_orange_400">
+            android:background="?colorPrimary">
 
             <carbon.widget.LinearLayout
                 android:layout_width="match_parent"

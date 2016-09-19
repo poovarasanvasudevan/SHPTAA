@@ -435,4 +435,10 @@ public class BookActivity extends AppCompatActivity {
         finish();
         //bookListAdapter.clearData();
     }
+
+    @Override
+    protected void onPostResume() {
+        new CartLoader().execute();
+        super.onPostResume();
+    }
 }
